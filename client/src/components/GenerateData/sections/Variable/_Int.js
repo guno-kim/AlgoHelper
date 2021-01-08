@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Input,Descriptions,Checkbox,InputNumber } from 'antd';
 import 'antd/dist/antd.css';
 function _Int(props) {
@@ -6,21 +6,19 @@ function _Int(props) {
     const [Data, setData] = useState(props.data)
     const handleName=(e)=>{
         setData({...Data,name:e.target.value})
-        props.changeVariable({...Data,name:e.target.value})
     }
     const handleMin=(e)=>{
         setData({...Data,min:e})
-        props.changeVariable(Data)
     }
     const handleMax=(e)=>{
-        console.log(e);
         setData({...Data,max:e})
-        props.changeVariable(Data)
     }
     const handleFix=(e)=>{
         setData({...Data,fix:e.target.checked})
-        props.changeVariable(Data)
     }
+    useEffect(() => {
+        props.changeVariable(Data)
+    }, [Data])
 
     return (
         <div>

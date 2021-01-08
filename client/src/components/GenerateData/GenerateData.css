@@ -1,0 +1,63 @@
+#main-container{
+    display:flex ;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+#left-container{
+    display:flex ;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    height: 100vh;
+    background-color: RGB(250, 250, 250);
+
+}
+
+#variable-container{
+    display:flex ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid lightgray;
+    margin: 50px;
+
+}
+#inputbox-container{
+    display:flex ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid lightgray;
+    margin: 50px;
+}
+.header{
+    background-color: rgb(230, 247, 255);
+    width: 100%;
+    display:flex ;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+
+}
+.header>h1,h3{
+    width: 100%;
+    text-align: center;
+}
+
+#right-container{
+    display:flex ;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100vh;
+}

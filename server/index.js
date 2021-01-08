@@ -9,6 +9,8 @@ app.post('/',(req,res)=>{
     res.json({messsage:"hellow"})
 })
 
+app.use('/data',require('./routes/data'))
+
 app.listen(port,()=>{
     console.log('listening..');
 })
