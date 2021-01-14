@@ -45,20 +45,6 @@ function GenerateData() {
                 }
             })
     }
-    const makeFormatBox=(format)=>{
-        console.log(format)
-        let box=[]
-        format.forEach((row)=>{
-            let boxRow=""
-            row.forEach((ele)=>{    
-                boxRow+=ele+" "
-            })
-            boxRow+='\n'
-            box.push(boxRow)
-        })
-        console.log('box',box)
-        return box
-    }
     const makeOutputBox=(output)=>{
         let boxRow=""
         output.forEach((row)=>{

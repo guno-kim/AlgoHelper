@@ -3,7 +3,7 @@ import { List, Typography, Divider } from 'antd';
 import styled from 'styled-components'
 import axios from 'axios'
 
-function ProblemList() {
+function ProblemList(props) {
 
     const [Problems, setProblems] = useState([])
     const [Search, setSearch] = useState("")
@@ -44,6 +44,7 @@ function ProblemList() {
                     </List.Item>
                 )}
             />
+            <button onClick={()=>{props.history.push('/problem/create')}}>문제 작성</button>
         </div>
     )
 }

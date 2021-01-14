@@ -14,7 +14,7 @@ function Header() {
                         <NavLink to='/data/generate' exact activeClassName='active_class'>만들기</NavLink>
                     </li>
                     <li>
-                        <NavLink to='/problemList' exact activeClassName='active_class'>문제리스트</NavLink>
+                        <NavLink to='/problem' exact activeClassName='active_class'>문제리스트</NavLink>
                     </li>
                 </ul>
             </nav>
