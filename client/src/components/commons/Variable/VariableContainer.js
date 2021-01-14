@@ -5,7 +5,7 @@ import _String from './_String'
 import {Button} from 'antd'
 
 function VariableContainer(props) {
-    const [Variables, setVariables] = useState([{type:'int',name:'a',min:0,max:5,fix:true}])
+    const [Variables, setVariables] = useState(props.default)
     const [VariableIndex, setVariableIndex] = useState(1)
     const [ReRender, setReRender] = useState(0)
     const reRender=()=>{

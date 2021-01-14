@@ -15,7 +15,7 @@ function InputContainer(props) {
         return result
     }
 
-    const [InputBoxs, setInputBoxs] = useState([{inputs:makeEmptyArray(),width:2,height:1,horizonRep:1,verticalRep:1}])
+    const [InputBoxs, setInputBoxs] = useState(props.default)
     const [ReRender, setReRender] = useState(0)
     const reRender=()=>{
         setReRender(ReRender+1)
@@ -53,7 +53,7 @@ function InputContainer(props) {
         return(
             <div key={index}  style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
                 <InputBox data={item} sendState={changeInputBoxs(index)}/>
-                <Button onClick={()=>deleteInputBox(index)} type="primary" danger>삭제</Button>
+                <Button onClick={()=>deleteInputBox(index)} type="primary" style={{marginLeft:'20px'}} danger>삭제</Button>
             </div>
         )
     })
@@ -65,9 +65,9 @@ function InputContainer(props) {
 
     
     return (
-        <div>
+        <div style={{textAlign:'center'}}>
             {renderBoxs}
-            <Button onClick={addInputBox}>추가</Button>
+            <Button onClick={addInputBox} style={{margin:'5px'}}>추가</Button>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import {Input} from 'antd'
-import '../../../../css/common.css'
+import styled from 'styled-components'
 
 function InputBox(props) {
     const [Data, setData] = useState(props.data)
@@ -60,8 +60,10 @@ function InputBox(props) {
     }
     
     return (
-        <div key={Data.index} className='flex-row' style={{backgroundColor:'RGB(220, 220, 220)'}}>
-            {Data.inputs[0]&& makeBox(Data.width,Data.height)}
+        <Wrapper key={Data.index} className='flex-row' style={{backgroundColor:'RGB(220, 220, 220)', padding:'20px'}}>
+            <div style={{background:'RGB(250, 250, 250', borderRadius:'5px'}}>
+                {Data.inputs[0]&& makeBox(Data.width,Data.height)}
+            </div>
             <div className='flex-column' style={{marginLeft:'20px'}}>
                 <div className='flex-row'><div style={{marginRight:'20px'}}>가로 : </div><Input value={Data.width} onChange={handleWidth} style={{width:'50px'}}/></div>
                 <div className='flex-row'><div style={{marginRight:'20px'}}>세로 : </div><Input value={Data.height} onChange={handleHeight} style={{width:'50px'}}/></div>
@@ -70,8 +72,27 @@ function InputBox(props) {
                 <div className='flex-row'><div style={{marginRight:'20px'}}> 가로 반복 : </div><Input value={Data.horizonRep} onChange={handleHorizonRep} style={{width:'50px'}}/></div>
                 <div className='flex-row'><div style={{marginRight:'20px'}}> 세로 반복 : </div><Input value={Data.verticalRep} onChange={handelVerticalRep} style={{width:'50px'}}/></div>
             </div>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper=styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    .flex-row{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .flex-column{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+`
 
 export default InputBox
