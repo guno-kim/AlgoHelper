@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function FormatBox(props) {
+function InputFormat(props) {
     const makeFormatBox=(format)=>{
         let box=[]
         format.forEach((row)=>{
@@ -15,7 +15,7 @@ function FormatBox(props) {
         return box
     }
     return (
-        <Wrapper id="format">
+        <Wrapper id="format" style={{textAlign:'left'}}>
             {makeFormatBox(props.format)}
         </Wrapper>
     )
@@ -31,4 +31,4 @@ const Wrapper=styled.pre`
     margin: 0;
     padding: 0;
 `
-export default FormatBox
+export default InputFormat

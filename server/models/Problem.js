@@ -3,11 +3,11 @@ const mongoose=require('mongoose')
 const problemSchema=mongoose.Schema({
     id:{
         type:String,
-        unique:true,
         required:true
     },
     title:{
-        type:String
+        type:String,
+        required:true
     },
     description:{
         type:String
@@ -15,9 +15,13 @@ const problemSchema=mongoose.Schema({
     variables:{
         type:Array
     },
-    inputs:{
+    inputBlocks:{
         type:Array
+    },
+    public:{
+        type:Boolean
     }
+
 })
 
 const Problem=mongoose.model('Problem',problemSchema)

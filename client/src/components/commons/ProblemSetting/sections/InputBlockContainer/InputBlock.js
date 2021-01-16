@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import {Input} from 'antd'
 import styled from 'styled-components'
 
-function InputBox(props) {
+function InputBlock(props) {
     const [Data, setData] = useState(props.data)
     const [ReRender, setReRender] = useState(0)
     const reRender=()=>{
@@ -95,4 +95,4 @@ const Wrapper=styled.div`
     }
 `
 
-export default InputBox
+export default InputBlock

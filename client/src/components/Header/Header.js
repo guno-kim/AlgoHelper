@@ -11,7 +11,7 @@ function Header() {
                         <NavLink to='/' exact activeClassName='active_class'>메인</NavLink>
                     </li>
                     <li>
-                        <NavLink to='/data/generate' exact activeClassName='active_class'>만들기</NavLink>
+                        <NavLink to='/problem/create' exact activeClassName='active_class'>만들기</NavLink>
                     </li>
                     <li>
                         <NavLink to='/problem' exact activeClassName='active_class'>문제리스트</NavLink>

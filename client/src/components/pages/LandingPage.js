@@ -1,6 +1,7 @@
 import React,{useEffect} from 'react'
 import axios from 'axios'
-import{ Button} from 'antd'
+import{ Button,Form,Input,Checkbox} from 'antd'
+
 function LandingPage(props) {
     useEffect(() => {
         const body={message:"hihi"}
@@ -11,9 +12,34 @@ function LandingPage(props) {
             })
     }, [])
 
+
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+      };
+      const tailLayout = {
+        wrapperCol: { offset: 8, span: 16 },
+      };
+      
     return (
         <div>
-            <Button onClick={()=>{props.history.push('/data/generate')}}>데이터 생성</Button>
+            <Form
+                name="basic"
+                >
+                <Form.Item
+                    label="Username"
+                    name="username"
+                    rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                    Submit
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
     )
 }

@@ -1,10 +1,16 @@
 const express=require('express')
 const router=express.Router();
 const {Problem}=require('../models/Problem')
+
+router.get('/',async (req,res)=>{
+    const problem=await Problem.findOne({_id:req.query._id})
+    res.send(problem)
+})
+
 router.get('/getList',async (req,res)=>{
     console.log(req.query.search)
 
-    const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{_id:0,'id':1,'title':1})
+    const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{'id':1,'title':1})
     res.send(problemList)
 })
 
@@ -13,7 +19,6 @@ router.post('/create',(req,res)=>{
     console.log(problem)
     problem.save()
         .then(()=>{
-            console.log('success!!!')
             res.status(200).send({success:true})
         })
         .catch((err)=>{

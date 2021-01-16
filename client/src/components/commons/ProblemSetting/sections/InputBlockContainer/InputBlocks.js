@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
-import InputBox from './InputBox'
+import InputBlock from './InputBlock'
 import {Button} from 'antd'
 
-function InputContainer(props) {
+function InputBlockContainer(props) {
     const makeEmptyArray=()=>{
         let result=[]
         for(let j=0;j<10;j++){
@@ -15,61 +15,61 @@ function InputContainer(props) {
         return result
     }
 
-    const [InputBoxs, setInputBoxs] = useState(props.default)
+    const [InputBlocks, setInputBlocks] = useState(props.default)
     const [ReRender, setReRender] = useState(0)
     const reRender=()=>{
         setReRender(ReRender+1)
     }
 
     useEffect(() => {
-        props.sendState(InputBoxs)
+        props.sendState(InputBlocks)
     }, [])
 
     useEffect(() => {
-        props.sendState(InputBoxs)
-    }, [InputBoxs])
+        props.sendState(InputBlocks)
+    }, [InputBlocks])
 
     const changeInputBoxs=(index)=>{
         return(
             (box)=>{
-                let temp=InputBoxs
+                let temp=InputBlocks
                 temp[index]=box
-                setInputBoxs(temp)
+                setInputBlocks(temp)
             }
         )
     }
     const deleteInputBox=(index)=>{
-        let temp=InputBoxs
+        let temp=InputBlocks
         temp[index]={}
-        setInputBoxs(temp)
+        setInputBlocks(temp)
         reRender()
     }
 
 
-    const renderBoxs=InputBoxs.map((item,index)=>{
+    const renderBoxs=InputBlocks.map((item,index)=>{
         if(!item.inputs){
             return
         }
         return(
             <div key={index}  style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
-                <InputBox data={item} sendState={changeInputBoxs(index)}/>
+                <InputBlock data={item} sendState={changeInputBoxs(index)}/>
                 <Button onClick={()=>deleteInputBox(index)} type="primary" style={{marginLeft:'20px'}} danger>삭제</Button>
             </div>
         )
     })
 
-    const addInputBox=()=>{
-        let temp=[...InputBoxs,{inputs:makeEmptyArray(),width:2,height:1,horizonRep:1,verticalRep:1}]
-        setInputBoxs(temp)
+    const addInputBlocks=()=>{
+        let temp=[...InputBlocks,{inputs:makeEmptyArray(),width:1,height:1,horizonRep:1,verticalRep:1}]
+        setInputBlocks(temp)
     }
 
     
     return (
         <div style={{textAlign:'center'}}>
             {renderBoxs}
-            <Button onClick={addInputBox} style={{margin:'5px'}}>추가</Button>
+            <Button onClick={addInputBlocks} style={{margin:'5px'}}>추가</Button>
         </div>
     )
 }
 
-export default InputContainer
+export default InputBlockContainer

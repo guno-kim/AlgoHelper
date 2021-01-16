@@ -28,7 +28,7 @@ function ProblemList(props) {
         console.log(Problems)
     }
     const problemName=Problems[0]&&Problems.map((ele)=>{
-        return `[${ele.id}]  ${ele.title}`
+        return <a href={`problem/${ele._id}`}>[ {ele.id} ]  {ele.title}</a>
     })
 
     return (
