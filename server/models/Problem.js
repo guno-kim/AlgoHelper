@@ -18,6 +18,9 @@ const problemSchema=mongoose.Schema({
     inputBlocks:{
         type:Array
     },
+    testCodes:{
+        type:Object
+    },
     public:{
         type:Boolean
     }

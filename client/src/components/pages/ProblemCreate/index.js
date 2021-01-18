@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 import {Button,Input,Modal,Checkbox,Form} from 'antd'
 import axios from 'axios'
-
 import ProblemSetting from '../../commons/ProblemSetting/index';
 
 function ProblemCreate(props) {
@@ -10,6 +9,7 @@ function ProblemCreate(props) {
         title:'',
         description:'',
         variables:[{type:'int',name:'a',min:0,max:5,fix:true}],
+        testCodes:{language:'python',code:'asdsa\nasd'},
         inputBlocks:[{inputs:new Array(10).fill("").map(()=>new Array(10).fill("")),width:1,height:1,horizonRep:1,verticalRep:1}],
         public:true
     })
@@ -97,6 +97,7 @@ function ProblemCreate(props) {
 
                     </Form>
                 </Modal>
+
         </div>
     )
 }

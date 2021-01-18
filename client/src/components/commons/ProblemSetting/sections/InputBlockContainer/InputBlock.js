@@ -4,16 +4,15 @@ import styled from 'styled-components'
 
 function InputBlock(props) {
     const [Data, setData] = useState(props.data)
-    const [ReRender, setReRender] = useState(0)
-    const reRender=()=>{
-        setReRender(ReRender+1)
-    }
     useEffect(() => {
         props.sendState(Data)
     }, [])
     useEffect(() => {
         props.sendState(Data)
     }, [Data])
+    useEffect(() => {
+        setData(props.data)
+    }, [props.data])
     const handleWidth=(e)=>{
         setData({...Data,width:e.target.value})
     }
@@ -30,7 +29,6 @@ function InputBlock(props) {
         let temp=Data.inputs
         temp[y][x]=e.target.value
         setData({...Data,inputs:temp})
-        reRender()
     }
 
 

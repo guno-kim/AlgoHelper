@@ -16,10 +16,6 @@ function InputBlockContainer(props) {
     }
 
     const [InputBlocks, setInputBlocks] = useState(props.default)
-    const [ReRender, setReRender] = useState(0)
-    const reRender=()=>{
-        setReRender(ReRender+1)
-    }
 
     useEffect(() => {
         props.sendState(InputBlocks)
@@ -39,10 +35,9 @@ function InputBlockContainer(props) {
         )
     }
     const deleteInputBox=(index)=>{
-        let temp=InputBlocks
-        temp[index]={}
+        let temp=[...InputBlocks]
+        temp.splice(index,1)
         setInputBlocks(temp)
-        reRender()
     }
 
 

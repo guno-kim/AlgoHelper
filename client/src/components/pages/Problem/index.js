@@ -48,6 +48,7 @@ const Wrapper=styled.div`
 display:flex ;
 flex-direction: column;
 align-items: center;
+text-align: center;
 width: 60%;
 min-width:1000px;
 background-color: RGB(250, 250, 250);

@@ -14,12 +14,16 @@ function _Int(props) {
         setData({...Data,max:e})
     }
     const handleFix=(e)=>{
+        console.log(Data)
+        console.log(props.data)
         setData({...Data,fix:e.target.checked})
     }
     useEffect(() => {
         props.changeVariable(Data)
     }, [Data])
-
+    useEffect(() => {
+        setData(props.data)
+    },[props.data])
     return (
         <div>
             <Descriptions layout="vertical" bordered size="small" column={{ xs: 8, sm: 16, md: 24}}>

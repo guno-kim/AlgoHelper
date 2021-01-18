@@ -9,8 +9,8 @@ import _Float from './sections/Variable/_Float'
 import _String  from './sections/Variable/_String'
 import VariableContainer from './sections/Variable/VariableContainer';
 import InputContainer from './sections/InputBlockContainer/InputBlocks'
-
 import InputFormat from './sections/InputFormat/InputFormat'
+import CodeBox from './sections/CodeBox/CodeBox'
 
 function GenerateData(props) {
     const [Format, setFormat] = useState([])
@@ -30,7 +30,7 @@ function GenerateData(props) {
     
     const handleVariables=(variables)=>{setSetting({...Setting,variables:variables})}
     const handleInput=(inputBlocks)=>{ setSetting({...Setting,inputBlocks:inputBlocks})}
-
+    const handleTestCodes=(code)=>{setSetting({...Setting,testCodes:code})}
 
     const sendInputs=()=>{
         let body={
@@ -108,7 +108,9 @@ function GenerateData(props) {
                     <Button onClick={sendInputs} size='medium' >생성</Button>
                    
                 </div>
-                
+                <div className="code-container">
+                    <CodeBox default={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
+                </div>
             </div>
 
         </Wrapper>
@@ -181,6 +183,19 @@ const Wrapper=styled.div`
                 overflow-x: scroll auto;
                 border-radius: 10px;
             }
+        }
+
+        .code-container{
+            display:flex ;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 90%;
+            border-radius: 10px;
+            background-color: white;
+            border: 1px solid lightgray;
+            padding: 50px;
+
         }
 
     }

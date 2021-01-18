@@ -7,10 +7,6 @@ import {Button} from 'antd'
 function VariableContainer(props) {
     const [Variables, setVariables] = useState(props.default)
     const [VariableIndex, setVariableIndex] = useState(1)
-    const [ReRender, setReRender] = useState(0)
-    const reRender=()=>{
-        setReRender(ReRender+1)
-    }
     useEffect(() => {
         props.sendState(Variables)
     }, [])
@@ -46,23 +42,15 @@ function VariableContainer(props) {
             }
         )
     }
-    const deleteVariable=(index)=>{
-        let temp=Variables
-        temp[index]={}
+    const deleteVariable= (index)=>{
+        let temp=[...Variables]
+        temp.splice(index,1)
         setVariables(temp)
-        reRender()
     }
-
-    const printVariables=()=>{
-        console.log(Variables);
-    }
-
-
-
-
-
-
-
+    // const printVariables=()=>{
+    //     setVariables([{type:'int',name:'asd',min:0,max:5,fix:true},{type:'int',name:'asd',min:0,max:5,fix:true}])
+    //     console.log(Variables);
+    // }
 
 
 
