@@ -18,9 +18,6 @@ function Problem(props) {
         })
         setSetting(request.data)
     }, [])
-    const reRender=()=>{
-        setReRender(ReRender+1)
-    }
 
    
     

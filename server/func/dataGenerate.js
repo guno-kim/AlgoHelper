@@ -13,8 +13,6 @@ function makeVariableTable(variableList){
 
         let variables={}
         for(v of variableList){
-            if(!v.name)  //삭제된 변수
-                continue
 
             if(variables[v.name]){
                 reject({error:'duplicate variable'})

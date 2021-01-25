@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router();
 const {Problem}=require('../models/Problem')
-
+const compiler=require('../func/compile')
 router.get('/',async (req,res)=>{
     const problem=await Problem.findOne({_id:req.query._id})
     res.send(problem)
@@ -26,5 +26,33 @@ router.post('/create',(req,res)=>{
             res.status(400).send({err:err})})
 })
 
+router.get('/test',(req,res)=>{
+    const params=new URLSearchParams(req.query)
+    const problem=JSON.parse(params.get('problem'))
+    const docker=compiler.getDocker(problem.testCodes.code)
+
+    startDelem=".............START_OF_PROBLEM............."
+    endDelem=".............END_OF_PROBLEM............."
+    isStarted=false
+    docker.stderr.on("data", (data) => {
+        console.log('error!!! :',data.toString('utf-8'));
+    })
+    docker.stdout.on('data',(data)=>{
+        const line=data.toString('utf-8');
+        if (line.includes(startDelem)) {
+            console.log('started!!')
+            isStarted = true;
+            docker.stdin.write(Buffer.from("hello" + "\n"));
+        } else if (line.includes(endDelem)) {
+            isStarted = false;
+        }
+    })
+
+    docker.stdout.on("data", (data) => {
+        if (!isStarted) return;
+        const line = data.toString('utf-8');
+        console.log(line)
+    })
+})
 
 module.exports=router
