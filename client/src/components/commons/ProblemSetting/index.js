@@ -14,7 +14,7 @@ import CodeBox from './sections/CodeBox/CodeBox'
 
 function GenerateData(props) {
     const [Format, setFormat] = useState([])
-    const [Output, setOutput] = useState([])
+    const [Input, setInput] = useState([])
     
     const [Setting, setSetting] = useState(props.setting)
     
@@ -32,7 +32,7 @@ function GenerateData(props) {
     const handleInput=(inputBlocks)=>{ setSetting({...Setting,inputBlocks:inputBlocks})}
     const handleTestCodes=(code)=>{setSetting({...Setting,testCodes:code})}
 
-    const sendInputs=()=>{
+    const getExample=()=>{
         let body={
             variables:Setting.variables,
             inputs:Setting.inputBlocks
@@ -43,7 +43,7 @@ function GenerateData(props) {
                     alert(res.data.error)
                 }else if(res.status==200){
                     setFormat(res.data.format)
-                    setOutput(res.data.output)
+                    setInput(res.data.input)
                 }
             })
     }
@@ -99,13 +99,13 @@ function GenerateData(props) {
                             <form>
                                 <textarea 
                                 ref={textAreaRef}
-                                value={makeOutputBox(Output)}
+                                value={Input}
                                 id='output'
                                 />
                             </form>
                         </div>
                     </div>
-                    <Button onClick={sendInputs} size='medium' >생성</Button>
+                    <Button onClick={getExample} size='medium' >생성</Button>
                    
                 </div>
                 <div className="code-container">
