@@ -40,7 +40,7 @@ function ProblemCreate(props) {
     return (
         <div style={{textAlign:'center'}}>
             <ProblemSetting setting={Setting} sendState={getChildState}/>
-
+            
             <Button type="primary"  size='large' onClick={showModal}>저장</Button>
                 <Modal title="Basic Modal" visible={isModalVisible} 
                     onCancel={handleCancel}
@@ -97,7 +97,13 @@ function ProblemCreate(props) {
 
                     </Form>
                 </Modal>
-
+                <Button onClick={()=>{
+                    axios.get('/problem/test',{
+                        params:{
+                            problem:Setting
+                        }
+                    })
+                }}>test</Button>            
         </div>
     )
 }
