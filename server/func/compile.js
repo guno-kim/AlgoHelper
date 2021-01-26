@@ -3,14 +3,18 @@ const path = require('path');
 const rs = require('randomstring');
 const fs = require('fs-extra');
 
-const getDocker=(source)=>{
+const getDocker=(testCode,myCode)=>{
     const hash = rs.generate(10);
     const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
     fs.mkdirSync(tempPath, {recursive: true});
-    filename='main.py'
-    const mainFilePath = path.resolve(tempPath, filename);
-    fs.createFileSync(mainFilePath);
-    fs.writeFileSync(mainFilePath, Buffer.from(source));
+
+    const testFilePath = path.resolve(tempPath, 'testCode.py');
+    fs.createFileSync(testFilePath);
+    fs.writeFileSync(testFilePath, Buffer.from(testCode));
+
+    const myFilePath = path.resolve(tempPath, 'myCode.py');
+    fs.createFileSync(myFilePath);
+    fs.writeFileSync(myFilePath, Buffer.from(testCode));
 
     let docker=spawn('docker',['run','--rm','-i',"-v", `${tempPath}:/src`,'python-compiler-test:1.0']);
     return docker

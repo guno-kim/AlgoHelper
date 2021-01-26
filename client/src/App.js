@@ -4,6 +4,7 @@ import Header from './components/Header/Header'
 import ProblemList from './components/pages/ProblemList/ProblemList'
 import Problem from './components/pages/Problem/index'
 import ProblemCreate from './components/pages/ProblemCreate/index'
+import Test from './components/pages/Test/index'
 function App() {
   return (
     <div>
@@ -14,6 +15,7 @@ function App() {
           <Route exact path='/problem/create' component={ProblemCreate}></Route>
           <Route exact path='/problem' component={ProblemList}></Route>
           <Route exact path='/problem/:problem_Id' component={Problem}></Route>
+          <Route exact path='/problem/:problem_Id/test' component={Test}></Route>
         </Switch>
       </BrowserRouter>
     </div>

@@ -2,14 +2,13 @@ import React,{useEffect,useState} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import ProblemSetting from '../../commons/ProblemSetting/index';
-
+import {Button} from 'antd'
+import { useHistory } from 'react-router-dom'
 function Problem(props) {
 
     
     const problem_Id=props.match.params.problem_Id
     const [Setting, setSetting] = useState({})
-    const [ReRender, setReRender] = useState(0)
-
     useEffect(async () => {
         const request=await axios.get('/problem',{
             params:{
@@ -19,7 +18,7 @@ function Problem(props) {
         setSetting(request.data)
     }, [])
 
-   
+   const history=useHistory()
     
 
     const getChildState=(state)=>{
@@ -35,7 +34,13 @@ function Problem(props) {
 
                 <button onClick={()=>{
                     console.log(Setting)
-                    }}>print</button>
+                    }}>Setting</button>
+                <Button onClick={()=>{
+                    history.push({
+                        pathname:`/problem/${problem_Id}/test`,
+                        state:{setting:Setting}
+                })
+                }}>테스트</Button>
             </Wrapper>
         </div>
     )
