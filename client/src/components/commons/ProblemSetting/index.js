@@ -35,7 +35,7 @@ function GenerateData(props) {
     const getExample=()=>{
         let body={
             variables:Setting.variables,
-            inputs:Setting.inputBlocks
+            inputBlocks:Setting.inputBlocks
         }
         axios.post('/data/generate',body)
             .then((res)=>{
@@ -46,16 +46,6 @@ function GenerateData(props) {
                     setInput(res.data.input)
                 }
             })
-    }
-    const makeOutputBox=(output)=>{
-        let boxRow=""
-        output.forEach((row)=>{
-            row.forEach((ele)=>{    
-                boxRow+=ele+" "
-            })
-            boxRow+='\n'
-        })
-        return boxRow
     }
     function copyToClipboard(e) {
         textAreaRef.current.select();

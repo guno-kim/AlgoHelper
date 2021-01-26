@@ -30,35 +30,35 @@ function getVariableTable(variableList){
         resolve(variables)
     })
 }
-function getFormat(inputBoxs,variableTable){
+function getFormat(inputBlocks,variableTable){
     return new Promise((resolve,reject)=>{
         let format=[]
-        for(inputBox of inputBoxs){
+        for(inputBlock of inputBlocks){
             let segment=[]
-            if(!inputBox.height)
+            if(!inputBlock.height)
                 continue
-            for(let i=0;i<inputBox.height;i++){
+            for(let i=0;i<inputBlock.height;i++){
                 let temp=[]
-                for(let j=0;j<inputBox.width;j++){
-                    if(inputBox.inputs[i][j])
-                        temp.push(inputBox.inputs[i][j])
+                for(let j=0;j<inputBlock.width;j++){
+                    if(inputBlock.inputs[i][j])
+                        temp.push(inputBlock.inputs[i][j])
                 }
                 segment.push(temp)
             }
             let vRep=0,hRep=0
-            if(!isNaN(parseInt(inputBox.verticalRep))){
-                vRep=inputBox.verticalRep
+            if(!isNaN(parseInt(inputBlock.verticalRep))){
+                vRep=inputBlock.verticalRep
             }else{
-                v=variableTable[inputBox.verticalRep]
+                v=variableTable[inputBlock.verticalRep]
                 if(v&&v.type=='int'&&v.fix)
                     vRep=v.value
                 else
                     reject({error:'잘못된 반복 횟수입니다.'})
             }
-            if(!isNaN(parseInt(inputBox.horizonRep))){
-                hRep=inputBox.horizonRep
+            if(!isNaN(parseInt(inputBlock.horizonRep))){
+                hRep=inputBlock.horizonRep
             }else{
-                v=variableTable[inputBox.horizonRep]
+                v=variableTable[inputBlock.horizonRep]
                 if(v&&v.fix)
                 hRep=v.value
                 else
@@ -104,11 +104,11 @@ function getInput(format,variableTable){
         resolve({format,variableTable,input})
     })
 }
-function generateData(body){
+function getExample(body){
     return new Promise((resolve,reject)=>{
     getVariableTable(body.variables)
         .then((variableTable)=>{
-            return getFormat(body.inputs,variableTable)
+            return getFormat(body.inputBlocks,variableTable)
         })
         .then(({format,variableTable})=>{
             return getInput(format,variableTable)
@@ -125,4 +125,4 @@ function generateData(body){
 }
 
 
-module.exports={generateData}
+module.exports={getExample}
