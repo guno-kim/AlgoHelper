@@ -10,7 +10,7 @@ import _String  from './sections/Variable/_String'
 import VariableContainer from './sections/Variable/VariableContainer';
 import InputContainer from './sections/InputBlockContainer/InputBlocks'
 import InputFormat from './sections/InputFormat/InputFormat'
-import CodeBox from './sections/CodeBox/CodeBox'
+import CodeBox from '../CodeBox/CodeBox'
 
 function GenerateData(props) {
     const [Format, setFormat] = useState([])
@@ -99,7 +99,7 @@ function GenerateData(props) {
                    
                 </div>
                 <div className="code-container">
-                    <CodeBox default={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
+                    <CodeBox value={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
                 </div>
             </div>
 

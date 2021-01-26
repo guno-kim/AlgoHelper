@@ -31,15 +31,15 @@ router.post('/create',(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
-    const docker=getDocker(problem.testCodes.code)
-    const result=await getExample(problem)
-    
 
-    startDelem=".............START_OF_PROBLEM............."
-    endDelem=".............END_OF_PROBLEM............."
-    inputDelem="input"
-    ee=".....end....."
-    isStarted=false
+    const docker=getDocker(problem.testCodes.code,problem.myCode.code)
+    const result=await getExample(problem)
+
+
+    let testInputDelem="testCode:input",testEndDelem="testCode:end"
+    let myInputDelem="myCode:input", myEndDelem="myCode:end"
+
+    let isStarted1=false,isStarted2=false
     docker.stderr.on("data", (data) => {
         console.log('error!!! :',data.toString('utf-8'));
     })
@@ -49,40 +49,45 @@ router.get('/test',async (req,res)=>{
 
     docker.stdout.on('data',(data)=>{
         const line=data.toString('utf-8');
-        //console.log('stdout :  ',line)
-        if (line.includes(inputDelem)) {
-            console.log('input',i)
-            isStarted = true;
+        if (line.includes(testInputDelem)) {
+            isStarted1 = true;
             docker.stdin.write(Buffer.from(tempInput[i]));
-            i+=1
-        } else if (line.includes(ee)) {
-            isStarted = false;
+        } else if (line.includes(testEndDelem)) {
+            isStarted1 = false;
         }
+
+        if (line.includes(myInputDelem)) {
+            isStarted2 = true;
+            docker.stdin.write(Buffer.from(tempInput[i]));
+        } else if (line.includes(myEndDelem)) {
+            isStarted2 = false;
+        }
+
     })
 
 
-
-
-
-    // docker.stdout.on('data',(data)=>{
-    //     const line=data.toString('utf-8');
-    //     if (line.includes(startDelem)) {
-    //         console.log('started!!')
-    //         isStarted = true;
-    //         docker.stdin.write(Buffer.from(result.input));
-    //     } else if (line.includes(endDelem)) {
-    //         isStarted = false;
-    //     }
-    // })
+    const testOuput=[]
+    const myOutput=[]
 
     docker.stdout.on("data", (data) => {
-        if (!isStarted) return;
         const line = data.toString('utf-8');
-        console.log('output  ',line)
+        console.log('out  : <<',line,'   ',isStarted1,isStarted2,' >>')
+        if (!isStarted1 && !isStarted2){
+            return
+        } 
+        if(isStarted1&&!line.includes(testInputDelem)){
+            testOuput.push(line)
+        }
+        else if(isStarted2&&!line.includes(myInputDelem)){
+            myOutput.push(line)
+            i+=1
+        }
     })
 
     docker.on('close',()=>{
         console.log('closed!!!')
+        console.log(testOuput)
+        console.log(myOutput)
     })
 })
 

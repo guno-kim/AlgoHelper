@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import Editor from "@monaco-editor/react";
 
 function CodeBox(props) {
-    const [Code, setCode] = useState(props.default)
+    const [Code, setCode] = useState(props.value)
     const handleCode=(code,e)=>{
         setCode({...Code,code:code})
     }
@@ -30,7 +30,7 @@ function CodeBox(props) {
                         onChange={handleCode}
                 />
             </div>
-           
+           <button onClick={()=>{console.log(Code)}}></button>
         </div>
     )
 }
