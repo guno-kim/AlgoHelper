@@ -8,13 +8,11 @@ function getRandomVariable(variable){
     }
 }
 
-function makeVariableTable(variableList){
+function getVariableTable(variableList){
     return new Promise((resolve,reject)=>{
 
         let variables={}
         for(v of variableList){
-            if(!v.name)  //삭제된 변수
-                continue
 
             if(variables[v.name]){
                 reject({error:'duplicate variable'})
@@ -32,35 +30,35 @@ function makeVariableTable(variableList){
         resolve(variables)
     })
 }
-function makeFormat(inputBoxs,variableTable){
+function getFormat(inputBlocks,variableTable){
     return new Promise((resolve,reject)=>{
         let format=[]
-        for(inputBox of inputBoxs){
-            let input=[]
-            if(!inputBox.height)
+        for(inputBlock of inputBlocks){
+            let segment=[]
+            if(!inputBlock.height)
                 continue
-            for(let i=0;i<inputBox.height;i++){
+            for(let i=0;i<inputBlock.height;i++){
                 let temp=[]
-                for(let j=0;j<inputBox.width;j++){
-                    if(inputBox.inputs[i][j])
-                        temp.push(inputBox.inputs[i][j])
+                for(let j=0;j<inputBlock.width;j++){
+                    if(inputBlock.inputs[i][j])
+                        temp.push(inputBlock.inputs[i][j])
                 }
-                input.push(temp)
+                segment.push(temp)
             }
             let vRep=0,hRep=0
-            if(!isNaN(parseInt(inputBox.verticalRep))){
-                vRep=inputBox.verticalRep
+            if(!isNaN(parseInt(inputBlock.verticalRep))){
+                vRep=inputBlock.verticalRep
             }else{
-                v=variableTable[inputBox.verticalRep]
+                v=variableTable[inputBlock.verticalRep]
                 if(v&&v.type=='int'&&v.fix)
                     vRep=v.value
                 else
                     reject({error:'잘못된 반복 횟수입니다.'})
             }
-            if(!isNaN(parseInt(inputBox.horizonRep))){
-                hRep=inputBox.horizonRep
+            if(!isNaN(parseInt(inputBlock.horizonRep))){
+                hRep=inputBlock.horizonRep
             }else{
-                v=variableTable[inputBox.horizonRep]
+                v=variableTable[inputBlock.horizonRep]
                 if(v&&v.fix)
                 hRep=v.value
                 else
@@ -69,50 +67,51 @@ function makeFormat(inputBoxs,variableTable){
 
             for(let i=0;i<vRep;i++){
                 let formatRow=[]
-                for(row of input)
-                    for(let j=0;j<hRep;j++)
+                for(row of segment){
+                    for(let j=0;j<hRep;j++){
                         for(ele of row)
                             formatRow.push(ele)
-                    
-                format.push(formatRow)
+                    }
+                    format.push(formatRow)
+                    formatRow=[]
+                }
             }
         }
         resolve({format,variableTable})
     })
 }
-function makeOutput(format,variableTable){
+function getInput(format,variableTable){
     return new Promise((resolve,reject)=>{
-        let output=[]
+        let input=""
 
         format.forEach((row)=>{
-            let outputRow=[]
             row.forEach((item)=>{
                 if(!isNaN(parseFloat(item))){//숫자일때
-                    outputRow.push(item)
+                    input+=item+' '
                 }
                 else if(!variableTable[item])
                     reject({error:'선언하지 않은 변수가 있습니다.'})
                 else{
                     let nowVariable=variableTable[item]
                     if(nowVariable.fix)
-                        outputRow.push(nowVariable.value)
+                        input+=nowVariable.value+' '
                     else
-                        outputRow.push(getRandomVariable(nowVariable))
+                        input+=getRandomVariable(nowVariable)+' '
                 }
             })
-            output.push(outputRow)
+            input+='\n'
         })
-        resolve({format,variableTable,output})
+        resolve({format,variableTable,input})
     })
 }
-function generateData(body){
+function getExample(body){
     return new Promise((resolve,reject)=>{
-    makeVariableTable(body.variables)
+    getVariableTable(body.variables)
         .then((variableTable)=>{
-            return makeFormat(body.inputs,variableTable)
+            return getFormat(body.inputBlocks,variableTable)
         })
         .then(({format,variableTable})=>{
-            return makeOutput(format,variableTable)
+            return getInput(format,variableTable)
         })
         .then((result)=>{
             resolve(result)
@@ -126,4 +125,4 @@ function generateData(body){
 }
 
 
-module.exports={generateData}
+module.exports={getExample}

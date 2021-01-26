@@ -1,2 +1,3 @@
 node_modules
 /server/config/key.js
+DEBUG_TEMP_PATH
