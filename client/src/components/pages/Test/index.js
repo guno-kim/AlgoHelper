@@ -24,7 +24,11 @@ function Test() {
                         params:{
                             problem:{...setting,myCode:MyCode}
                         }
+                    }).then((res)=>{
+                        console.log('11')
+                        console.log(res.data)
                     })
+                    console.log('22')
                 }}>test</Button> 
             </Wrapper>
             

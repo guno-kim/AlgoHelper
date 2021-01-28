@@ -14,7 +14,7 @@ const getDocker=(testCode,myCode)=>{
 
     const myFilePath = path.resolve(tempPath, 'myCode.py');
     fs.createFileSync(myFilePath);
-    fs.writeFileSync(myFilePath, Buffer.from(testCode));
+    fs.writeFileSync(myFilePath, Buffer.from(myCode));
 
     let docker=spawn('docker',['run','--rm','-i',"-v", `${tempPath}:/src`,'python-compiler-test:1.0']);
     return docker
