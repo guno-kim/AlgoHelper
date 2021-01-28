@@ -2,7 +2,8 @@ const express=require('express')
 const router=express.Router();
 const {Problem}=require('../models/Problem')
 const {getDocker}=require('../func/compile')
-const {getExample}=require('../func/dataGenerate')
+const {getExample,getInputs}=require('../func/dataGenerate');
+const { resolve } = require('path');
 
 router.get('/',async (req,res)=>{
     const problem=await Problem.findOne({_id:req.query._id})
@@ -31,64 +32,83 @@ router.post('/create',(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
+    let outputs=[]
+    let output={}
+    let cnt=0,phase=0;
 
-    const docker=getDocker(problem.testCodes.code,problem.myCode.code)
-    const result=await getExample(problem)
+    try {
+        const promise= await new Promise(async (resolve)=>{
+                const docker=getDocker(problem.testCodes.code,problem.myCode.code)
+                const inputs=await getInputs(problem,3)
+                docker.stderr.on("data", (data) => {
+                    console.log('error!!! :',data.toString('utf-8'));
+                })
 
+                docker.stdout.on('data',(data)=>{
+                    const line = data.toString('utf-8');
+                    if (line.includes("-----end-----")){
+                        console.log('ended')
+                        resolve()
+                    }
+                    console.log('===============',phase)
+                    console.log('out  : ',line)
+                    console.log('===============')
+                    switch (phase) {
+                        case 0:
+                            docker.stdin.write(Buffer.from(inputs[0]));
+                            phase++;
+                            break;
+                        case 1:
+                            output.testOutput=line;
+                            phase++;
+                            break;
+                        case 2:
+                            output.testTime=line;
+                            docker.stdin.write(Buffer.from(inputs[cnt]));
+                            phase++;
+                            break;
+                        case 3:
+                            output.myOutput=line;
+                            phase++;
+                            break;
+                        case 4:
+                            output.myTime=line;
+                            outputs.push(output)
+                            console.log(output)
+                            output={}
+                            cnt++;
+                            if (cnt==3)
+                                break;
+                            docker.stdin.write(Buffer.from(inputs[cnt]));
+                            phase=1;
+                            break;
+                        default:
+                            break;
+                    }
+                })
 
-    let testInputDelem="testCode:input",testEndDelem="testCode:end"
-    let myInputDelem="myCode:input", myEndDelem="myCode:end"
+                docker.on('close',()=>{
+                    console.log('closed!!!')
+                    console.log(outputs)
+                })
 
-    let isStarted1=false,isStarted2=false
-    docker.stderr.on("data", (data) => {
-        console.log('error!!! :',data.toString('utf-8'));
-    })
+        })
+        
+        //await Promise(promise)
+        res.status(200).send({
+            success:true,
+            outputs
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            result: outputs,
+            message: error
+        })
+    }
 
-    let tempInput=["asda\n",'sdf\n','23wdsa\n']
-    let i=0;
-
-    docker.stdout.on('data',(data)=>{
-        const line=data.toString('utf-8');
-        if (line.includes(testInputDelem)) {
-            isStarted1 = true;
-            docker.stdin.write(Buffer.from(tempInput[i]));
-        } else if (line.includes(testEndDelem)) {
-            isStarted1 = false;
-        }
-
-        if (line.includes(myInputDelem)) {
-            isStarted2 = true;
-            docker.stdin.write(Buffer.from(tempInput[i]));
-        } else if (line.includes(myEndDelem)) {
-            isStarted2 = false;
-        }
-
-    })
-
-
-    const testOuput=[]
-    const myOutput=[]
-
-    docker.stdout.on("data", (data) => {
-        const line = data.toString('utf-8');
-        console.log('out  : <<',line,'   ',isStarted1,isStarted2,' >>')
-        if (!isStarted1 && !isStarted2){
-            return
-        } 
-        if(isStarted1&&!line.includes(testInputDelem)){
-            testOuput.push(line)
-        }
-        else if(isStarted2&&!line.includes(myInputDelem)){
-            myOutput.push(line)
-            i+=1
-        }
-    })
-
-    docker.on('close',()=>{
-        console.log('closed!!!')
-        console.log(testOuput)
-        console.log(myOutput)
-    })
+    
 })
 
 module.exports=router

@@ -1,18 +1,20 @@
 #!/bin/bash
 cd src
 
-echo ".............START_OF_PROBLEM............."
 cnt=0
+echo "-----start-----"
 while (( "${cnt}" < 3 )); do
-    echo "testCode:input"
-    python ./testCode.py
-    echo "testCode:end"
+    start=$(date +%s%3N)
+    python ./testCode.py  #1
+    end=$(date +%s%3N)
 
-    echo "myCode:input"
-    python ./myCode.py
-    echo "myCode:end"
+    echo "$(( $end - $start ))"  #2
 
+    start=$(date +%s%3N)
+    python ./myCode.py  #3
+    end=$(date +%s%3N)
 
-    (( cnt = "${cnt}" + 1 )) # 숫자와 변수의 연산은 (())가 필요합니다.
+    echo "$(( $end - $start ))" #4
+    (( cnt = "${cnt}" + 1 ))
 done
-echo ".............END_OF_PROBLEM............."
+echo "-----end-----"

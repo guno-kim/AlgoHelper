@@ -77,7 +77,7 @@ function getFormat(inputBlocks,variableTable){
                 }
             }
         }
-        resolve({format,variableTable})
+        resolve(format)
     })
 }
 function getInput(format,variableTable){
@@ -101,28 +101,40 @@ function getInput(format,variableTable){
             })
             input+='\n'
         })
-        resolve({format,variableTable,input})
+        resolve(input)
     })
 }
-function getExample(body){
-    return new Promise((resolve,reject)=>{
-    getVariableTable(body.variables)
-        .then((variableTable)=>{
-            return getFormat(body.inputBlocks,variableTable)
-        })
-        .then(({format,variableTable})=>{
-            return getInput(format,variableTable)
-        })
-        .then((result)=>{
-            resolve(result)
-        })
-        .catch((err)=>{
-            console.log(err)
-            reject(err)
-        })
-
+function getExample(setting){
+    return new Promise(async(resolve,reject)=>{  
+        try{
+            let variableTable=[]
+            variableTable=await getVariableTable(setting.variables)
+            let format=await getFormat(setting.inputBlocks,variableTable)
+            let input=await getInput(format,variableTable)
+            resolve({format,input})
+        }catch(error){
+            console.log(error)
+            reject(error)
+        }
+    })
+}
+function getInputs(setting,cnt){
+    return new Promise(async(resolve,reject)=>{  
+        try{
+            let inputs=[]
+            let variableTable=[]
+            variableTable=await getVariableTable(setting.variables)
+            for(let i=0;i<cnt;i++){
+                let format=await getFormat(setting.inputBlocks,variableTable)
+                let input=await getInput(format,variableTable)
+                inputs.push(input)
+            }
+            resolve(inputs)
+        }catch(error){
+            console.log(error)
+            reject(error)
+        }
     })
 }
 
-
-module.exports={getExample}
+module.exports={getExample,getInputs}
