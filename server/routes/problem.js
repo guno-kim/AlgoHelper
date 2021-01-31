@@ -37,22 +37,24 @@ router.get('/test',async (req,res)=>{
     let cnt=0,phase=0;
 
     try {
-        const promise= await new Promise(async (resolve)=>{
+        await new Promise(async (resolve)=>{
                 const docker=getDocker(problem.testCodes.code,problem.myCode.code)
                 const inputs=await getInputs(problem,3)
                 docker.stderr.on("data", (data) => {
                     console.log('error!!! :',data.toString('utf-8'));
                 })
 
-                docker.stdout.on('data',(data)=>{
-                    const line = data.toString('utf-8');
-                    if (line.includes("-----end-----")){
-                        console.log('ended')
-                        resolve()
-                    }
+                docker.stdout.on('data', (data)=>{
+                    let line = data.toString('utf-8');
+                    
                     console.log('===============',phase)
                     console.log('out  : ',line)
                     console.log('===============')
+                    if (line.includes("-----end-----")){
+                        console.log('ended')
+                        line=line.replace("-----end-----\n","")
+                        resolve()
+                    }
                     switch (phase) {
                         case 0:
                             docker.stdin.write(Buffer.from(inputs[0]));
@@ -72,7 +74,14 @@ router.get('/test',async (req,res)=>{
                             phase++;
                             break;
                         case 4:
-                            output.myTime=line;
+                            output.myTime=line
+                            output.input=inputs[cnt]
+                            if(output.myOutput==output.testOutput){//정답인지 체크
+                                output.result='correct'
+                            }else{
+                                output.result='wrong'
+                            }
+                            
                             outputs.push(output)
                             console.log(output)
                             output={}
@@ -85,6 +94,7 @@ router.get('/test',async (req,res)=>{
                         default:
                             break;
                     }
+                 
                 })
 
                 docker.on('close',()=>{
@@ -93,8 +103,6 @@ router.get('/test',async (req,res)=>{
                 })
 
         })
-        
-        //await Promise(promise)
         res.status(200).send({
             success:true,
             outputs

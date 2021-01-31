@@ -30,7 +30,6 @@ function CodeBox(props) {
                         onChange={handleCode}
                 />
             </div>
-           <button onClick={()=>{console.log(Code)}}></button>
         </div>
     )
 }

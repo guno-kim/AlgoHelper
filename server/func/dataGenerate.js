@@ -122,9 +122,8 @@ function getInputs(setting,cnt){
     return new Promise(async(resolve,reject)=>{  
         try{
             let inputs=[]
-            let variableTable=[]
-            variableTable=await getVariableTable(setting.variables)
             for(let i=0;i<cnt;i++){
+                let variableTable=await getVariableTable(setting.variables)
                 let format=await getFormat(setting.inputBlocks,variableTable)
                 let input=await getInput(format,variableTable)
                 inputs.push(input)
