@@ -12,6 +12,7 @@ import InputContainer from './sections/InputBlockContainer/InputBlocks'
 import InputFormat from './sections/InputFormat/InputFormat'
 import CodeBox from '../CodeBox/CodeBox'
 
+
 function GenerateData(props) {
     const [Format, setFormat] = useState([])
     const [Input, setInput] = useState([])
