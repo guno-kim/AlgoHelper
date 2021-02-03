@@ -28,8 +28,8 @@ function LandingPage(props) {
                 axios.get('/login').then((res)=>{console.log(res.data)})
             }}>login</button>
             <button onClick={()=>{
-                axios.get('/').then((res)=>{console.log(res.data)})
-            }}>get</button>
+                console.log(document.cookie)
+            }}>cookie</button>
             <button onClick={()=>{
                 axios.get('/temp').then((res)=>{console.log(res.data)})
             }}>temp</button>
