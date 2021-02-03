@@ -6,7 +6,7 @@ const GoogleStarategy = require('passport-google-oauth20').Strategy;
   passport.use(new GoogleStarategy({ // local 전략을 세움
     clientID: process.env.GoogleClientID,
     clientSecret:process.env.GoogleClientSecret,
-    callbackURL:"/login/callback"
+    callbackURL:"/user/login/callback"
   },  
   function(accessToken, refreshToken, profile, cb) {
     console.log('profile: ', profile)
