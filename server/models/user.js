@@ -29,18 +29,15 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
         .then(console.log('saved'))
     }
     user=await User.findOne(userInfo)
-    const token=jwt.sign(userInfo,process.env.JWT_SECRET_KEY,{
-      expiresIn: 60
-  })
-    return {token,name:user.name}
+    console.log(user._id)
+    const token=jwt.sign(user._id.toHexString(),process.env.JWT_SECRET_KEY)
+    return token
   }catch(err){
     console.log(err)
     return {err}
   }
-
-
 };
-
+userSchema.statics.findByToken=()=>{}
 
 const User=mongoose.model('Users', userSchema)
 

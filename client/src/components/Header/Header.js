@@ -17,6 +17,9 @@ function Header() {
                         <NavLink to='/problem' exact activeClassName='active_class'>문제리스트</NavLink>
                     </li>
                     <li>
+                        <NavLink to='/user/profile' exact activeClassName='active_class'>마이페이지</NavLink>
+                    </li>
+                    <li>
                         <a href="http://localhost:5000/user/login">로그인</a>
                     </li>
                 </ul>
