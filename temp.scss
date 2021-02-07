@@ -6,5 +6,9 @@
         width: 80%;
         display: flex;
         align-content: center;
+
+    }
+    .container:hover{
+        cursor: pointer;
     }
 }

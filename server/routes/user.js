@@ -24,17 +24,26 @@ router.get('/login/callback',
       res.redirect('http://localhost:3000')
   });
 
-  router.get('/auth',async (req,res)=>{
+router.get('/auth',async (req,res)=>{
     try {
         const token=req.cookies.logintoken;
-        let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
-        let user=await User.findOne({_id:decoded})
-        res.json({auth:true,user:user})
+        if(!token){
+            res.json({auth:false})
+        }
+        else{
+            let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
+            let user=await User.findOne({_id:decoded})
+            res.json({auth:true,data:user})
+        }
     } catch (error) {
         console.log(error)
         res.json({auth:false,error:error})
     }
-  
 })
+
+router.get('/logout',(req,res)=>{
+    res.clearCookie('logintoken')
+    res.json({success:true})
+});
 
 module.exports=router
