@@ -1,8 +1,15 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import {logout} from '../../actions/user_action'
 
-function Header() {
+import axios from 'axios'
+function Header(props) {
+    const auth = useSelector(state => state.user.auth)
+    const dispatch = useDispatch();
+
     return (
         <Wrapper>
             <nav className='container'>
@@ -20,8 +27,17 @@ function Header() {
                         <NavLink to='/user/profile' exact activeClassName='active_class'>마이페이지</NavLink>
                     </li>
                     <li>
-                        <a href="http://localhost:5000/user/login">로그인</a>
+                        {
+                            auth? <a onClick={()=>{
+                                    dispatch(logout())
+                                    document.location.reload()
+                                }}>로그아웃</a> 
+                                :<NavLink to='/user/login' exact activeClassName='active_class'>로그인</NavLink>
+
+                        }
                     </li>
+                    <button onClick={()=>{console.log(auth)}}>auth</button>
+                    <button onClick={()=>{console.log(props.history);}}>props</button>
                 </ul>
             </nav>
         </Wrapper>

@@ -2,10 +2,14 @@ import React,{useEffect} from 'react'
 import axios from 'axios'
 import{ Button,Form,Input,Checkbox} from 'antd'
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux'
 import {auth} from '../../actions/user_action'
 function LandingPage(props) {
     const dispatch = useDispatch();
-
+    const user = useSelector(state => state)
+    useEffect(() => {
+        dispatch(auth())
+    }, [])
     return (
         <div>
             <div>
@@ -37,8 +41,8 @@ function LandingPage(props) {
                     })
             }}>auth</button>
             <button onClick={()=>{
-                axios.get('/temp').then((res)=>{console.log(res.data)})
-            }}>temp</button>
+                console.log(user)
+            }}>user</button>
         </div>
     )
 }
