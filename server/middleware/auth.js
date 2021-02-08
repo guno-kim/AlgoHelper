@@ -3,11 +3,15 @@ const {User}=require('../models/User')
 let auth=async (req,res,next)=>{
     try {
         const token=req.cookies.logintoken;
-        let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
-        let user=await User.findOne({_id:decoded})
-        req.auth=true
-        req.user=user
-        next()
+        if(!token){
+            console.log('no token!!!!')
+            res.end()
+        }else{
+            let user=await User.findByToken(token)
+            req.auth=true
+            req.user=user
+            next()
+        }
     } catch (error) {
         console.log(error)
         req.auth=false

@@ -1,4 +1,4 @@
-import {AUTH_USER,LOGIN_USER,LOGOUT_USER} from './type'
+import {AUTH_USER,LOGIN_USER,LOGOUT_USER,UPDATE_USER} from './type'
 import axios from 'axios'
 export async function auth(){
     const req=await axios.get('/user/auth').then(res=>res.data)
@@ -13,5 +13,12 @@ export async function logout(){
     return{
         type:LOGOUT_USER,
         success:req.success
+    }
+}
+export async function update(body){
+    const req=await axios.post('/user/profile/update',body).then(res=>res.data)
+    return{
+        type:UPDATE_USER,
+        data:req.data
     }
 }

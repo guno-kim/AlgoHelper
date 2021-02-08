@@ -9,11 +9,7 @@ function ProblemList(props) {
     const [Problems, setProblems] = useState([])
     const [Search, setSearch] = useState("")
     useEffect(() => {
-        //console.log(Search)
     }, [Search])
-    // useEffect(() => {
-    //     getProblemList()
-    // }, [])
 
     const handleSearch=(e)=>{
         setSearch(e.target.value)

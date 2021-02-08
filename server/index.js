@@ -23,11 +23,13 @@ app.get('/',(req,res)=>{
     res.json({messsage:"hellow"})
 
 })
-app.get('/temp',auth,(req,res)=>{
-    if(req.auth){
-        
-    }
-
+app.get('/temp',(req,res)=>{
+    console.log('temp')
+    res.writeHead(302,{
+        'Location':'http://localhost:3000/problem'
+    })
+    res.end()
+    //res.redirect('http://localhost:3000/problem')
 })
 app.use('/data',require('./routes/data'))
 app.use('/problem',require('./routes/problem'))

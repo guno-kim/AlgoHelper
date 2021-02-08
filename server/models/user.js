@@ -37,7 +37,11 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
     return {err}
   }
 };
-userSchema.statics.findByToken=()=>{}
+userSchema.statics.findByToken=async (token)=>{
+  let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
+  let user=await User.findOne({_id:decoded})
+  return user
+}
 
 const User=mongoose.model('Users', userSchema)
 

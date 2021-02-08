@@ -12,7 +12,8 @@ router.use(passport.session()); // 세션 연결
 router.get('/login', passport.authenticate('google', { scope:['profile']}));
 
 router.get('/login/callback',
-  passport.authenticate('google'),async (req,res)=>{
+  passport.authenticate('google'),
+  async (req,res)=>{
       console.log(req.user._json.sub)
       console.log(req.user._json.name)
       console.log(req.user.provider)
@@ -20,7 +21,6 @@ router.get('/login/callback',
       res.cookie('logintoken',token,{
           httpOnly:true
       })
-      //res.json({name:result.name})
       res.redirect('http://localhost:3000')
   });
 
@@ -31,8 +31,7 @@ router.get('/auth',async (req,res)=>{
             res.json({auth:false})
         }
         else{
-            let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
-            let user=await User.findOne({_id:decoded})
+            let user=await User.findByToken(token)
             res.json({auth:true,data:user})
         }
     } catch (error) {
@@ -45,5 +44,19 @@ router.get('/logout',(req,res)=>{
     res.clearCookie('logintoken')
     res.json({success:true})
 });
+
+router.post('/profile/update',async (req,res)=>{
+    try {
+        const token=req.cookies.logintoken;
+        const body=req.body
+        let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
+        let newUser=await User.findOneAndUpdate({_id:decoded},{$set:body},{new:true})
+        res.json({auth:true,data:newUser})
+        console.log(newUser)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({error:error})
+    }
+})
 
 module.exports=router

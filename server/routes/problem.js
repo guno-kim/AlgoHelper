@@ -4,6 +4,7 @@ const {Problem}=require('../models/Problem')
 const {getDocker}=require('../func/compile')
 const {getExample,getInputs}=require('../func/dataGenerate');
 const { resolve } = require('path');
+const {auth}=require('../middleware/auth')
 
 router.get('/',async (req,res)=>{
     const problem=await Problem.findOne({_id:req.query._id})
@@ -16,9 +17,20 @@ router.get('/getList',async (req,res)=>{
     const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{'id':1,'title':1})
     res.send(problemList)
 })
+router.get('/my',auth,async (req,res)=>{
+    const problemList=await Problem.find({writer:req.user._id})
+    console.log(problemList)
+    res.send(problemList)
+})
+router.post('/delete',auth,(req,res)=>{
+    Problem.findOneAndDelete({_id:req.body._id,writer:req.user._id})
+        .then(()=>{res.status(200).json({success:true})})
+        .catch(()=>{res.status(400).json({success:false})})
+})
 
-router.post('/create',(req,res)=>{
-    const problem=new Problem(req.body)
+router.post('/create',auth,(req,res)=>{
+
+    const problem=new Problem({...req.body,writer:req.user._id})
     console.log(problem)
     problem.save()
         .then(()=>{
