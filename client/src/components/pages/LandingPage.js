@@ -32,8 +32,8 @@ function LandingPage(props) {
                 <button >login</button>
             </a>
             <button onClick={()=>{
-                axios.get('/login').then((res)=>{console.log(res.data)})
-            }}>login</button>
+                axios.get('/temp').then((res)=>{console.log(res.data)})
+            }}>temp</button>
             <button onClick={()=>{
                 dispatch(auth())
                     .then((res)=>{

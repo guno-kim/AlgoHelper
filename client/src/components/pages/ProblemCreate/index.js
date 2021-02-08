@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import {Button,Input,Modal,Checkbox,Form} from 'antd'
 import axios from 'axios'
 import ProblemSetting from '../../commons/ProblemSetting/index';
-
+import { withRouter } from 'react-router-dom';
 function ProblemCreate(props) {
     const [Setting, setSetting] = useState({
         id:'',
@@ -11,18 +11,17 @@ function ProblemCreate(props) {
         variables:[{type:'int',name:'a',min:0,max:5,fix:true}],
         testCodes:{language:'python',code:'asdsa\nasd'},
         inputBlocks:[{inputs:new Array(10).fill("").map(()=>new Array(10).fill("")),width:1,height:1,horizonRep:1,verticalRep:1}],
-        public:true
     })
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleId=(e)=>{setSetting({...Setting,id:e.target.value})}
     const handleTitle=(e)=>{setSetting({...Setting,title:e.target.value})}
     const handleDesc=(e)=>{setSetting({...Setting,description:e.target.value})}
-    const handlePublic=(e)=>{setSetting({...Setting,public:e.target.checked})}
     const handleSave=()=>{
         axios.post('/problem/create',Setting)
-            .then(()=>{
+            .then((res)=>{
                     alert("저장 성공")
+                    console.log(props)
                     props.history.push('/problem')
             })
             .catch((err)=>{
@@ -83,8 +82,6 @@ function ProblemCreate(props) {
                         >
                             <Input.TextArea onChange={handleDesc} value={Setting.description} />
                         </Form.Item>
-                        <p>공개 <Checkbox checked={Setting.public} onChange={handlePublic}/></p>
-                        <br/>
                         <Form.Item
                             wrapperCol={
                                 {offset:10}
@@ -98,14 +95,10 @@ function ProblemCreate(props) {
                     </Form>
                 </Modal>
                 <Button onClick={()=>{
-                    axios.get('/problem/test',{
-                        params:{
-                            problem:Setting
-                        }
-                    })
+                    props.history.push('/problem')
                 }}>test</Button>            
         </div>
     )
 }
 
-export default ProblemCreate
+export default withRouter(ProblemCreate)
