@@ -1,9 +1,10 @@
 import React,{useEffect} from 'react'
 import axios from 'axios'
-import{ Button,Form,Input,Checkbox} from 'antd'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux'
 import {auth} from '../../actions/user_action'
+import styled from 'styled-components'
+import Layout from '../Layout/Layout'
 function LandingPage(props) {
     const dispatch = useDispatch();
     const user = useSelector(state => state)
@@ -11,40 +12,12 @@ function LandingPage(props) {
         dispatch(auth())
     }, [])
     return (
-        <div>
+        <Layout>
             <div>
-                <form action={"/register"} method={'post'}>
-                    <input name='id'></input>
-                    <input name='password'></input>
-                    <button type='submit'>submit</button>
-                </form>
+                <input/>
             </div>
-            <br/>
-            <br/>
-            <div>
-                <form action={"/login"} method={'post'}>
-                    <input name='id'></input>
-                    <input name='pw'></input>
-                    <button type='submit'>submit</button>
-                </form>
-            </div>
-            <a href="http://localhost:5000/login">
-                <button >login</button>
-            </a>
-            <button onClick={()=>{
-                axios.get('/temp').then((res)=>{console.log(res.data)})
-            }}>temp</button>
-            <button onClick={()=>{
-                dispatch(auth())
-                    .then((res)=>{
-                        console.log(res)
-                    })
-            }}>auth</button>
-            <button onClick={()=>{
-                console.log(user)
-            }}>user</button>
-        </div>
+        </Layout>
+        
     )
 }
-
 export default LandingPage

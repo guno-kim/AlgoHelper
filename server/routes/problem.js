@@ -57,7 +57,7 @@ router.get('/test',async (req,res)=>{
                 })
 
                 docker.stdout.on('data', (data)=>{
-                    let line = data.toString('utf-8');
+                    let line = data.toString('utf-8').trim();
                     
                     console.log('===============',phase)
                     console.log('out  : ',line)
