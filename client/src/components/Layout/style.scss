@@ -1,0 +1,18 @@
+#layout1{
+    display:flex ;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    #layout2{
+        display:flex ;
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+        min-width:1000px;
+        min-height: 92vh;
+        background-color: RGB(250, 250, 250);
+        
+    }
+}

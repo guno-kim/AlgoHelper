@@ -1,40 +1,22 @@
-import React,{useState,useEffect,useRef} from 'react'
-import {Button,Input,Form,Modal} from 'antd'
+import React,{useState} from 'react'
+import {Button,Input,Modal,Checkbox,Form} from 'antd'
 import axios from 'axios'
+import ProblemSetting from '../../commons/ProblemSetting/index';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components'
+import './style.scss'
 import Layout from '../../Layout/Layout'
-
-
-import _Int from './sections/Variable/_Int'
-import _Float from './sections/Variable/_Float'
-import _String  from './sections/Variable/_String'
-import VariableContainer from './sections/Variable/VariableContainer';
-import InputContainer from './sections/InputBlockContainer/InputBlocks'
-import InputFormat from './sections/InputFormat/InputFormat'
-import CodeBox from '../../commons/CodeBox/CodeBox'
-
-
-function GenerateData(props) {
-    const [Format, setFormat] = useState([])
-    const [Data, setData] = useState([])
+function ProblemCreate(props) {
     const [Setting, setSetting] = useState({
         id:'',
         title:'',
         description:'',
         variables:[{type:'int',name:'a',min:0,max:5,fix:true}],
-        testCodes:{language:'python',code:'def:'},
+        testCodes:{language:'python',code:'asdsa\nasd'},
         inputBlocks:[{inputs:new Array(10).fill("").map(()=>new Array(10).fill("")),width:1,height:1,horizonRep:1,verticalRep:1}],
     })
     const [isModalVisible, setIsModalVisible] = useState(false);
-    
 
-    const textAreaRef = useRef(null);
-    
-
-    //State Handle Function
-    const handleVariables=(variables)=>{setSetting({...Setting,variables:variables})}
-    const handleInput=(inputBlocks)=>{ setSetting({...Setting,inputBlocks:inputBlocks})}
-    const handleTestCodes=(code)=>{setSetting({...Setting,testCodes:code})}
     const handleId=(e)=>{setSetting({...Setting,id:e.target.value})}
     const handleTitle=(e)=>{setSetting({...Setting,title:e.target.value})}
     const handleDesc=(e)=>{setSetting({...Setting,description:e.target.value})}
@@ -51,85 +33,17 @@ function GenerateData(props) {
             })
     }
 
+    const getChildState=(state)=>{
+        setSetting(state)
+    }
+
     const showModal = () => {setIsModalVisible(true)};
     const handleCancel = () => {setIsModalVisible(false);};
-    const getExample=()=>{
-        let body={
-            variables:Setting.variables,
-            inputBlocks:Setting.inputBlocks
-        }
-        axios.post('/data/generate',body)
-            .then((res)=>{
-                if(res.status==201){
-                    alert(res.data.error)
-                }else if(res.status==200){
-                    setFormat(res.data.format)
-                    setData(res.data.input)
-                }
-            })
-    }
-    function copyToClipboard(e) {
-        textAreaRef.current.select();//텍스트 선택
-        document.execCommand('copy');//복사
-        e.target.focus();//선택 해제
-    };
-  
-   
     return (
         <Layout>
-        <Wrapper>
-                <div className='content-container'>
-                    <div className='header'>
-                        <h1 className='title'>변수 선언</h1>
-                        <h3 className='description'>사용할 변수를 선언하세요</h3>
-                    </div>
-                    <VariableContainer sendState={handleVariables} default={Setting.variables}/>
-                </div>
-                
-                <div className='content-container'>
-                    <div className='header'>
-                        <h1 className='title'>데이터 만들기</h1>
-                        <h3 className='description'>변수와 숫자를 이용해 데이터를 만드세요</h3>
-                    </div>
-                    <InputContainer sendState={handleInput} default={Setting.inputBlocks}/>
-                </div>
-
-                <div className='content-container'>
-                    <div style={{display:'flex'}}>
-                        <div style={{margin:'20px'}}>
-                            <div style={{fontSize:'2rem', textAlign:'center'}}>입력 형식</div>
-                            <InputFormat format={Format}/>
-                        </div>
-
-                        <div style={{margin:'20px'}}>
-                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                <div style={{fontSize:'2rem'}}>입력값</div>
-                                <button onClick={copyToClipboard} style={{justifySelf:'right'}}>Copy</button> 
-                            </div>
-                            
-                            <textarea 
-                                ref={textAreaRef}
-                                value={Data}
-                                id='output'
-                            />
-                        </div>
-                    </div>
-                    <Button onClick={getExample} size='medium' >생성</Button>
-                   
-                </div>
-                <div className="content-container">
-                    <div className='header'>
-                        <h1 className='title'>정답 코드 입력</h1>
-                        <h3 className='description'>채점에 사용될 정답 코드를 입력하세요</h3>
-                    </div>
-                    <CodeBox value={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
-                </div>
-                
-
-
-
-
-                <Button type="primary"  size='large' onClick={showModal}>저장</Button>
+            <ProblemSetting setting={Setting} sendState={getChildState}/>
+            
+            <Button type="primary"  size='large' onClick={showModal}>저장</Button>
                 <Modal title="Basic Modal" visible={isModalVisible} 
                     onCancel={handleCancel}
                     footer={[
@@ -183,18 +97,25 @@ function GenerateData(props) {
 
                     </Form>
                 </Modal>
-        </Wrapper>
+                <Button onClick={()=>{
+                    props.history.push('/problem')
+                }}>test</Button>            
         </Layout>
     )
 }
-
 const Wrapper=styled.div`
     display:flex ;
-    flex-direction:column;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
 
+    #main-container{
+        display:flex ;
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+        min-width:1000px;
+        background-color: RGB(250, 250, 250);
         
         #output{
             border: 1px solid black;
@@ -227,9 +148,9 @@ const Wrapper=styled.div`
                     font-size:2rem;
                 }
             }
+        }
     }
 `
 
 
-
-export default GenerateData
+export default withRouter(ProblemCreate)

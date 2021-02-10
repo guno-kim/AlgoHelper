@@ -13,6 +13,7 @@ function Header(props) {
     return (
         <Wrapper>
             <nav className='container'>
+                <h2 className='logo'>AlgoHelper</h2>
                 <ul >
                     <li>
                         <NavLink to='/' exact activeClassName='active_class'>메인</NavLink>
@@ -26,33 +27,34 @@ function Header(props) {
                     <li>
                         <NavLink to='/user/profile' exact activeClassName='active_class'>마이페이지</NavLink>
                     </li>
-                    <li>
-                        {
-                            auth? <a onClick={()=>{
-                                    dispatch(logout())
-                                    document.location.reload()
-                                }}>로그아웃</a> 
-                                :<NavLink to='/user/login' exact activeClassName='active_class'>로그인</NavLink>
-
-                        }
-                    </li>
-                    <button onClick={()=>{console.log(auth)}}>auth</button>
-                    <button onClick={()=>{console.log(props.history);}}>props</button>
                 </ul>
+                {
+                    auth? <button 
+                        className='sign-button'    
+                        onClick={()=>{
+                        dispatch(logout())
+                        document.location.reload()
+                    }}>로그아웃</button>
+                    :(<button className='sign-button'>
+                        <NavLink to='/user/login' exact style={{color:'black'}}>로그인</NavLink>
+                        </button>)
+                    
+                }
             </nav>
         </Wrapper>
     )
 }
 const Wrapper = styled.div`
-    min-height: 100px;
+    min-height: 50px;
     max-height: 10vh;
-    height: 10vh;
+    min-width: 900px;
+    height: 8vh;
     position: relative;
     position: sticky;
     top: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 10;
-    background: white;
+    background: rgb(39, 52, 68);
     .container{
         display: flex;
         align-items: center;
@@ -60,29 +62,41 @@ const Wrapper = styled.div`
         max-width: 1920px;
         height: 100%;
         margin: auto;
-        padding-right: 20px;
         border-bottom: 1px solid #ddd;
+            .logo{
+                position:absolute;
+                left:50px;
+                color: rgba(250, 250, 250); 
+                margin:0;
+            }
             ul{
                 display: flex;
                 flex-direction:row;
                 justify-content: flex-end;
+                align-items:center;
                 list-style:none;
-
+                font-size: 1rem;
+                font-weight: bolder;
+                margin:0;
                 li{
                     margin-left: 5rem;
                     a{
-                        color: rgba(0,0,0,0.5); 
+                        color: rgba(175, 179, 185); 
                         &:hover{
-                            color: black;
+                            color: white;
                         }
                     }
+                }
             }
-        }
+        
+        .sign-button{
+            position:absolute;
+            right:50px;
 
+        }
         .active_class {
-            color: black;
+            color: white;
             padding-bottom:10px;
-            border-bottom: 5px solid #ddd;
         }
     }
 `

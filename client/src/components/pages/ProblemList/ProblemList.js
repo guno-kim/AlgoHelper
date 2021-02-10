@@ -9,7 +9,13 @@ function ProblemList(props) {
     const [Problems, setProblems] = useState([])
     const [Search, setSearch] = useState("")
     useEffect(() => {
-    }, [Search])
+        axios.get('/problem/getList',{
+            params:{
+                search:""
+            }
+        }).then(res=>setProblems(res.data))
+        
+    }, [])
 
     const handleSearch=(e)=>{
         setSearch(e.target.value)
@@ -22,7 +28,6 @@ function ProblemList(props) {
             }
         })
         setProblems(request.data)
-        console.log(Problems)
     }
     const problemName=Problems[0]&&Problems.map((ele)=>{
         return <a href={`problem/${ele._id}`}>[ {ele.id} ]  {ele.title}</a>

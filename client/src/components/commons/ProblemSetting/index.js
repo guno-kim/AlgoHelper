@@ -55,7 +55,7 @@ function GenerateData(props) {
    
     return (
         <Wrapper>
-            <div  id='main-container'>
+            <div >
 
                 <div className='content-container'>
                     <div className='header'>
@@ -76,7 +76,7 @@ function GenerateData(props) {
                 <div className='content-container'>
                     <div style={{display:'flex'}}>
                         <div style={{margin:'20px'}}>
-                            <div style={{fontSize:'2rem'}}>입력 형식</div>
+                            <div style={{fontSize:'2rem', textAlign:'center'}}>입력 형식</div>
                             <InputFormat format={Format}/>
                         </div>
 
@@ -104,7 +104,6 @@ function GenerateData(props) {
                     <CodeBox value={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
                 </div>
             </div>
-
         </Wrapper>
     )
 }
@@ -113,15 +112,8 @@ const Wrapper=styled.div`
     display:flex ;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 60%;
 
-    #main-container{
-        display:flex ;
-        flex-direction: column;
-        align-items: center;
-        width: 60%;
-        min-width:1000px;
-        background-color: RGB(250, 250, 250);
         
         #output{
             border: 1px solid black;
@@ -131,6 +123,7 @@ const Wrapper=styled.div`
             overflow-y: scroll auto;
             overflow-x: scroll auto;
             border-radius: 10px;
+            white-space:nowrap;
         }
         .content-container{
             display:flex ;
@@ -153,7 +146,6 @@ const Wrapper=styled.div`
                     font-size:2rem;
                 }
             }
-        }
     }
 `
 

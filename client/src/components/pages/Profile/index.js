@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import {update} from '../../../actions/user_action'
 import { withRouter } from 'react-router-dom';
 import {List} from 'antd'
+import styled from 'styled-components'
+import Layout from '../../Layout/Layout'
 function MyPage() {
     const data=useSelector(state => state.user.data)
     const [Name, setName] = useState("")
@@ -42,20 +44,29 @@ function MyPage() {
     })
 
     return (
-        <div>
-            <input value={Name} onChange={(e)=>{setName(e.target.value)}}></input><button onClick={onNameChange}>변경</button>
+        <Layout>
+            <div style={{
+                width:'500px',
+                height:'700px',
+                borderRadius: '10px',
+                backgroundColor: 'white'
+            }}>
+                 <input value={Name} onChange={(e)=>{setName(e.target.value)}}></input><button onClick={onNameChange}>변경</button>
 
-            <List
-                footer={<div>Footer</div>}
-                bordered
-                dataSource={renderProblems}
-                renderItem={item => (
-                    <List.Item>
-                     {item}
-                    </List.Item>
-                )}
-            />
-        </div>
+                <List
+                    footer={<div>Footer</div>}
+                    bordered
+                    dataSource={renderProblems}
+                    renderItem={item => (
+                        <List.Item>
+                        {item}
+                        </List.Item>
+                    )}
+                />
+
+            </div>
+           
+        </Layout>
     )
 }
 
