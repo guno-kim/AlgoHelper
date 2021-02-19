@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import {update} from '../../../actions/user_action'
 import { withRouter } from 'react-router-dom';
-import {List} from 'antd'
+import {List,Divider,Table } from 'antd'
 import styled from 'styled-components'
 import Layout from '../../Layout/Layout'
 function MyPage() {
@@ -36,36 +36,92 @@ function MyPage() {
                 alert('잠시후 시도해주세요')
             })
     }
-    const renderProblems=Problems[0]&&Problems.map((ele)=>{
-        return (<div>
-                    <a href={`/problem/${ele._id}`}>[ {ele.id} ]  {ele.title}</a>
-                    <button onClick={()=>handleDelete(ele._id)}>삭제</button>
-                </div>)
+    const columns = [
+        { title: '제목', dataIndex: 'title', key: 'title',
+            render:(text)=><a href={`/problem/${text[1]}`}>{text[0]}</a>,
+            align:'center',
+
+        },
+        { title: '작성일', dataIndex: 'date', key: 'date',
+            render:text=>{
+                return text.substring(0,10)
+            },
+            align:'center',
+            width:'100px',
+
+        },
+        
+        { title: '추천', dataIndex: 'like', key: 'like',align:'center',width:'50px',    },
+        {
+            title: '삭제',
+            dataIndex: 'delete',
+            key: 'x',
+            render: (text) => <button onClick={()=>handleDelete(text)}>삭제</button>
+            ,align:'center',
+            width:'80px',
+
+          },
+      ];
+    const renderProblems2=Problems[0]&&Problems.map((ele,index)=>{
+        return ({
+            key:index,
+            delete:ele._id,
+            title:[`[ ${ele.id} ] ${ele.title}`,ele._id],
+            date:ele.date,
+            like:ele.like-ele.dislike
+        })
     })
+    const tempData=()=>{
+        let temp=[]
+        for(let i=0;i<95;i++){
+            temp.push({
+                key:i,
+                delete:'asd',
+                title:[`sfsdfd${i}`,'asd'],
+                date:'2020-12-12',
+                like:100-i
+            })
+        }
+        return temp
+    }
 
     return (
         <Layout>
+
+            
             <div style={{
-                width:'500px',
+                width:'800px',
                 height:'700px',
                 borderRadius: '10px',
-                backgroundColor: 'white'
+                border:'1px solid lightgray',
+                marginTop:'100px',
+                display:'flex',
+                flexDirection:'column',
+                alignItems:'center'
+                
             }}>
-                 <input value={Name} onChange={(e)=>{setName(e.target.value)}}></input><button onClick={onNameChange}>변경</button>
+                <Divider>닉네임</Divider>
+                <div style={{display:'flex' ,justifyContent:'center'}}>
+                    <input value={Name} onChange={(e)=>{setName(e.target.value)}}></input>
+                    <button onClick={onNameChange}>변경</button>
+                 </div>
 
-                <List
-                    footer={<div>Footer</div>}
-                    bordered
-                    dataSource={renderProblems}
-                    renderItem={item => (
-                        <List.Item>
-                        {item}
-                        </List.Item>
-                    )}
+                <Divider>내 문제</Divider>
+                <Table
+                    columns={columns}
+                    dataSource={tempData()}
+                    size='small'
+                    bordered='true'
+                    pagination={{
+                        position:['none','bottomCenter'], 
+                        pageSize:10,
+                        showSizeChanger:false
+                    }}
+                    style={{
+                        width:'500px'
+                    }}
                 />
-
             </div>
-           
         </Layout>
     )
 }

@@ -4,43 +4,26 @@ import 'antd/dist/antd.css';
 function _Int(props) {
 
     const [Data, setData] = useState(props.data)
-    const handleName=(e)=>{
-        setData({...Data,name:e.target.value})
-    }
-    const handleMin=(e)=>{
-        setData({...Data,min:e})
-    }
-    const handleMax=(e)=>{
-        setData({...Data,max:e})
-    }
-    const handleFix=(e)=>{
-        console.log(Data)
-        console.log(props.data)
-        setData({...Data,fix:e.target.checked})
-    }
-    useEffect(() => {
-        props.changeVariable(Data)
-    }, [Data])
     useEffect(() => {
         setData(props.data)
     },[props.data])
     return (
         <div>
-            <Descriptions layout="vertical" bordered size="small" column={{ xs: 8, sm: 16, md: 24}}>
+            <Descriptions layout="vertical" bordered size="small" column={{ xs: 8, sm: 16, md: 24}} style={{width:'500px'}}>
                 <Descriptions.Item label="자료형" style={{width:'20%',textAlign:'center'}}>
                     Int
                 </Descriptions.Item>
                 <Descriptions.Item label="변수이름" style={{width:'20%',textAlign:'center'}}>
-                    <Input value={Data.name} onChange={handleName} style={{textAlign:'center'}}/>
+                    {Data.name}
                 </Descriptions.Item>
                 <Descriptions.Item label="최소값" style={{width:'20%',textAlign:'center'}}>
-                    <InputNumber value={Data.min} onChange={handleMin} style={{textAlign:'center'}}/>
+                    {Data.min}
                 </Descriptions.Item>
                 <Descriptions.Item label="최대값" style={{width:'20%',textAlign:'center'}}>
-                    <InputNumber value={Data.max} onChange={handleMax} style={{textAlign:'center'}}/>
+                   {Data.max}
                 </Descriptions.Item>
                 <Descriptions.Item label="고정" style={{width:'20%',textAlign:'center'}}>
-                    <Checkbox checked={Data.fix} onChange={handleFix}/>
+                    <Checkbox checked={Data.fix} />
                 </Descriptions.Item>
             </Descriptions>
         </div>

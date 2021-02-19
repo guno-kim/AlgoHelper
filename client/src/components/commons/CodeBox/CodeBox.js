@@ -13,14 +13,14 @@ function CodeBox(props) {
         props.sendState(Code)
     }, [Code])
     return (
-        <div>
-            <select value = {Code.language} onChange={handelLanguage}>
-                <option value="c">C</option>
-                <option value="cpp">C++</option>
-                <option value="java">Java</option>
-                <option value="python">Python</option>
-                <option value="r">R</option>
-            </select>
+        <div style={{textAlign:'center'}}>
+            <div style={{display:'flex',justifyContent:'center',margin:'10px 0'}}>
+                <div style={{marginRight:'10px'}}>언어 : </div>
+                <select value = {Code.language} onChange={handelLanguage}>
+                    <option value="python">Python</option>
+                </select>
+            </div>
+            
             <div   style={{border:'solid 1px', width:'500px',height:'600px'}}>
                 <Editor
                         width='100%'

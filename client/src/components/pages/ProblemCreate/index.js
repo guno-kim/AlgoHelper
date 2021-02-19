@@ -102,15 +102,15 @@ function GenerateData(props) {
                         </div>
 
                         <div style={{margin:'20px'}}>
-                            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                                <div style={{fontSize:'2rem'}}>입력값</div>
-                                <button onClick={copyToClipboard} style={{justifySelf:'right'}}>Copy</button> 
+                            <div style={{display:'flex',alignItems:'center',justifyContent:'center', position:'relative'}}>
+                                <div style={{fontSize:'2rem', margin:'0 20px'}}>입력값</div>
+                                <button onClick={copyToClipboard} id='copy-button' >복사</button> 
                             </div>
                             
                             <textarea 
                                 ref={textAreaRef}
                                 value={Data}
-                                id='output'
+                                id='example'
                             />
                         </div>
                     </div>
@@ -194,39 +194,48 @@ const Wrapper=styled.div`
     justify-content: center;
     align-items: center;
     width: 90%;
+    min-width:1000px;
 
         
-        #output{
-            border: 1px solid black;
-            width: 400px;
-            height: 400px;
-            font-size: 20px;
-            overflow-y: scroll auto;
-            overflow-x: scroll auto;
-            border-radius: 10px;
-            white-space:nowrap;
-        }
-        .content-container{
+    #example{
+        border: 1px solid black;
+        width: 400px;
+        height: 400px;
+        font-size: 20px;
+        overflow-y: scroll auto;
+        overflow-x: scroll auto;
+        border-radius: 10px;
+        white-space:nowrap;
+    }
+    .content-container{
+        display:flex ;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        border-radius: 10px;
+        background-color: white;
+        border: 1px solid lightgray;
+        margin: 50px;
+        padding: 20px;
+        .header{
+            width: 100%;
             display:flex ;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            width: 90%;
-            border-radius: 10px;
-            background-color: white;
-            border: 1px solid lightgray;
-            margin: 50px;
-            padding: 20px;
-            .header{
-                width: 100%;
-                display:flex ;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom:20px;
-                .title{
-                    font-size:2rem;
-                }
+            margin-bottom:20px;
+            .title{
+                font-size:2rem;
             }
+        }
+    }
+    #copy-button{
+        background:white;
+        outline:none;
+        border:1px solid gray;
+    }
+    #copy-button:hover{
+        cursor: pointer;
     }
 `
 
