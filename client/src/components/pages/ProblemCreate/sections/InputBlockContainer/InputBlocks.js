@@ -46,7 +46,7 @@ function InputBlockContainer(props) {
             return
         }
         return(
-            <div key={index}  style={{display:'flex',alignItems:'center',marginTop:'10px'}}>
+            <div key={index}  style={{display:'flex',alignItems:'center',marginTop:'10px', width:'100%'}}>
                 <InputBlock data={item} sendState={changeInputBoxs(index)}/>
                 <Button onClick={()=>deleteInputBox(index)} type="primary" style={{marginLeft:'20px'}} danger>삭제</Button>
             </div>
@@ -60,7 +60,7 @@ function InputBlockContainer(props) {
 
     
     return (
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign:'center', width:'100%'}}>
             {renderBoxs}
             <Button onClick={addInputBlocks} style={{margin:'5px'}}>추가</Button>
         </div>

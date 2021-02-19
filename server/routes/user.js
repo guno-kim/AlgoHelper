@@ -27,6 +27,8 @@ router.get('/login/callback',
 router.get('/auth',async (req,res)=>{
     try {
         const token=req.cookies.logintoken;
+        console.log('------------')
+        console.log(req.cookies)
         if(!token){
             res.json({auth:false})
         }

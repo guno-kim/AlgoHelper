@@ -34,7 +34,7 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
     return token
   }catch(err){
     console.log(err)
-    return {err}
+    return ""
   }
 };
 userSchema.statics.findByToken=async (token)=>{

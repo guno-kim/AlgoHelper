@@ -14,7 +14,7 @@ router.get('/',async (req,res)=>{
 router.get('/getList',async (req,res)=>{
     console.log(req.query.search)
 
-    const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{'id':1,'title':1})
+    const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{'id':1,'title':1,'date':1,'like':1,'dislike':1})
     res.send(problemList)
 })
 router.get('/my',auth,async (req,res)=>{

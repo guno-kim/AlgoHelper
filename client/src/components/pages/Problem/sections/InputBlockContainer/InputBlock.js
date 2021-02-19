@@ -5,12 +5,6 @@ import styled from 'styled-components'
 function InputBlock(props) {
     const [Data, setData] = useState(props.data)
     useEffect(() => {
-        props.sendState(Data)
-    }, [])
-    useEffect(() => {
-        props.sendState(Data)
-    }, [Data])
-    useEffect(() => {
         setData(props.data)
     }, [props.data])
     const handleWidth=(e)=>{
@@ -38,7 +32,7 @@ function InputBlock(props) {
         for(let y=0;y<height;y++){
             let row=[]
             for(let x=0;x<width;x++){
-                row.push(<Input key={x} value={Data.inputs[y][x]} onChange={(e)=>handleInputs(y,x,e)} style={{width:'50px',height:'30px',margin:'5px'}}/>)
+                row.push(<div style={{width:'50px',border:'1px solid lightgray', margin:'10px'}}>{Data.inputs[y][x]}</div>)
             }
             box.push(row)
         }
@@ -59,23 +53,28 @@ function InputBlock(props) {
     
     return (
         <Wrapper key={Data.index} >
-            <div id='inputbox' style={{background:'RGB(250, 250, 250', borderRadius:'5px',overflowX:'scroll',border:'1px solid lightgray',padding:'10px'}}>
+            <div id='inputbox' style={{background:'white', borderRadius:'5px',overflowX:'scroll',border:'1px solid lightgray',padding:'10px'}}>
                 {Data.inputs[0]&& makeBox(Data.width,Data.height)}
             </div>
             <div className='flex-column' style={{width:'300px',padding:'10px'}}>
                 <div  className='flex-row'style={{marginBottom:'10px',background:'white',width:'280px',height:'60px',border:'1px solid lightgray'}}>
                     <div style={{fontSize:'18px',marginRight:'10px'}}>크기</div>
-                    <div style={{marginRight:'10px'}}>가로 : </div>
-                    <InputNumber value={Data.width} onChange={handleWidth} max={10} min={1} style={{width:'50px',marginRight:'10px'}} />
-                    <div style={{marginRight:'10px'}}>세로 : </div>
-                    <InputNumber value={Data.height} onChange={handleHeight} max={10} min={1} style={{width:'50px'}}/>
+                    <div style={{marginRight:'10px', fontSize:'14px'}}>가로 : </div>
+
+                    <div  style={{width:'50px',marginRight:'10px'}} >{Data.width}</div>
+                    <div style={{marginRight:'10px', fontSize:'14px'}}>세로 : </div>
+
+                    <div  style={{width:'50px',marginRight:'10px'}} >{Data.height}</div>
+
                 </div>
                 <div  className='flex-row' style={{background:'white',width:'280px',height:'60px',border:'1px solid lightgray'}}>
                     <div style={{fontSize:'18px',marginRight:'10px'}}>반복</div>
-                    <div style={{marginRight:'10px'}}>가로 : </div>
-                    <Input value={Data.horizonRep} onChange={handleHorizonRep} style={{width:'50px',marginRight:'10px'}}/>
-                    <div style={{marginRight:'10px'}}>세로 : </div>
-                    <Input value={Data.verticalRep} onChange={handelVerticalRep} style={{width:'50px'}}/>
+                    <div style={{marginRight:'10px', fontSize:'14px'}}>가로 : </div>
+                    <div  style={{width:'50px',marginRight:'10px'}} >{Data.horizonRep}</div>
+
+                    <div style={{marginRight:'10px', fontSize:'14px'}}>세로 : </div>
+                    <div  style={{width:'50px',marginRight:'10px'}} >{Data.verticalRep}</div>
+
                 </div>
 
             </div>
@@ -96,6 +95,9 @@ const Wrapper=styled.div`
     padding:0 20px;
     border:1px solid lightgray;
 
+    .inputDiv{
+
+    }
 
     #inputbox::-webkit-scrollbar {
         display: none;
