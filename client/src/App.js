@@ -17,7 +17,7 @@ function App() {
           <Route exact path='/' component={LandingPage}></Route>
           <Route exact path='/problem/create' component={Auth(ProblemCreate)}></Route>
           <Route exact path='/problem' component={ProblemList}></Route>
-          <Route exact path='/problem/:problem_Id' component={Problem}></Route>
+          <Route exact path='/problem/:problem_Id' component={Auth(Problem)}></Route>
           <Route exact path='/problem/:problem_Id/test' component={Test}></Route>
           <Route exact path='/user/profile' component={Auth(Profile)}></Route>
           <Route exact path='/user/login' component={Login}></Route>

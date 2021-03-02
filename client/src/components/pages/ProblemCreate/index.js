@@ -3,6 +3,7 @@ import {Button,Input,Form,Modal} from 'antd'
 import axios from 'axios'
 import styled from 'styled-components'
 import Layout from '../../Layout/Layout'
+import { withRouter } from 'react-router-dom';
 
 
 import _Int from './sections/Variable/_Int'
@@ -241,4 +242,4 @@ const Wrapper=styled.div`
 
 
 
-export default GenerateData
+export default withRouter(GenerateData)

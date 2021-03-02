@@ -62,7 +62,7 @@ function MyPage() {
 
           },
       ];
-    const renderProblems2=Problems[0]&&Problems.map((ele,index)=>{
+    const renderProblems=Problems[0]&&Problems.map((ele,index)=>{
         return ({
             key:index,
             delete:ele._id,
@@ -109,7 +109,7 @@ function MyPage() {
                 <Divider>내 문제</Divider>
                 <Table
                     columns={columns}
-                    dataSource={tempData()}
+                    dataSource={renderProblems}
                     size='small'
                     bordered='true'
                     pagination={{

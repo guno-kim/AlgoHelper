@@ -50,7 +50,7 @@ function ProblemList(props) {
             key:index,
             title:[`[ ${ele.id} ] ${ele.title}`,ele._id],
             date:ele.date,
-            like:ele.like-ele.dislike
+            like:ele.like.length-ele.dislike.length
         })
     })
     return (
