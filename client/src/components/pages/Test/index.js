@@ -33,8 +33,8 @@ function Test() {
     const getData=(outputs)=>{
         return outputs.map((output,idx)=>({
             idx:idx,
-            myTime:output.myTime,
-            testTime:output.testTime,
+            myTime:output.myTime+' ms',
+            testTime:output.testTime+' ms',
             result:output.result
         }))
     }
@@ -43,10 +43,10 @@ function Test() {
         setModalVisible(true)
     }
     const columns=[
-        {title:"번호",dataIndex:'idx'},
-        {title:'내 시간',dataIndex:'myTime'},
-        {title:'정답 시간',dataIndex:'testTime'},
-        {title:'결과',dataIndex:'result'},
+        {title:"번호",dataIndex:'idx',align:'center'},
+        {title:'내 시간',dataIndex:'myTime',align:'center'},
+        {title:'정답 시간',dataIndex:'testTime',align:'center'},
+        {title:'결과',dataIndex:'result',align:'center'},
         {
             title:'데이터 확인',dataIndex:'idx',
             render:(idx)=><Button onClick={()=>{showModal(idx)}}>확인</Button>
@@ -103,6 +103,7 @@ function Test() {
                                     height:'300px',
                                     overflowX:'scroll auto',
                                     overflowY:'scroll auto',
+                                    whiteSpace:'nowrap'
                                 }}
                             />
                         </div>
@@ -118,10 +119,12 @@ function Test() {
                                     height:'300px',
                                     overflowX:'scroll auto',
                                     overflowY:'scroll auto',
+                                    whiteSpace:'nowrap'
                                 }}
                             />
                         </div>
                     </div>
+                    <div style={{color:'red'}}>{Outputs[ModalIndex]&&Outputs[ModalIndex].error}</div>
                 </Modal>
             </Wrapper>
           

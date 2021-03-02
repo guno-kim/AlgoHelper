@@ -4,7 +4,6 @@ import Editor from "@monaco-editor/react";
 function CodeBox(props) {
     const [Code, setCode] = useState({code:'asd'})
     useEffect(() => {
-        console.log('!!')
         setCode(props.value)
     }, [props.value])
     return (

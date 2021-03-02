@@ -8,9 +8,6 @@ import Layout from '../Layout/Layout'
 function LandingPage(props) {
     const dispatch = useDispatch();
     const user = useSelector(state => state)
-    useEffect(() => {
-        dispatch(auth())
-    }, [])
     return (
         <Layout>
             <div>

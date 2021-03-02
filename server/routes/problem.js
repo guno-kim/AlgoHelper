@@ -1,5 +1,10 @@
 const express=require('express')
 const router=express.Router();
+const fs = require('fs-extra');
+const rs = require('randomstring');
+const path = require('path');
+const {exec, spawn}=require('child_process')
+
 const {Problem}=require('../models/Problem')
 const {getDocker}=require('../func/compile')
 const {getExample,getInputs}=require('../func/dataGenerate');
@@ -44,16 +49,41 @@ router.post('/create',auth,(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
-    let outputs=[]
-    let output={}
-    let cnt=0,phase=0;
-
+    let outputs=[],output={}
+    let cnt=0,phase=0,problemNum=10;
+    const hash = rs.generate(10);
+    const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
     try {
         await new Promise(async (resolve)=>{
-                const docker=getDocker(problem.testCodes.code,problem.myCode.code)
-                const inputs=await getInputs(problem,3)
+                const docker=getDocker(problem.testCodes.code,problem.myCode.code,tempPath,hash)
+                const inputs=await getInputs(problem,problemNum)
+                console.log(inputs)
+                function killDocker(){
+                    spawn('docker',['kill',hash])//리눅스에서 자식 프로세스는 따로 종료해야한다.
+                    docker.kill('SIGINT')
+                }
+
+                setTimeout(() => {
+                    console.log('Timeout')
+                    output.result='런타임오류'
+                    output.error='런타임오류'
+                    outputs.push(output)
+                    killDocker()
+                    resolve()
+                }, 10*1000);
                 docker.stderr.on("data", (data) => {
                     console.log('error!!! :',data.toString('utf-8'));
+                    err=data.toString('utf-8')
+                    output={
+                        myTime:0,
+                        testTime:0,
+                        result:'런타임 오류',
+                        error:err
+                    }
+                    outputs.push(output)
+                    killDocker()
+                    resolve()
+
                 })
 
                 docker.stdout.on('data', (data)=>{
@@ -77,8 +107,17 @@ router.get('/test',async (req,res)=>{
                             phase++;
                             break;
                         case 2:
+                            if(!line.includes('-----testTime-----')){
+                                output.error="정답 코드 출력초과"
+                                line='error'
+                                killDocker()
+                                resolve()
+                            }
+                            line=line.replace('-----testTime-----','')
+
                             output.testTime=line;
                             docker.stdin.write(Buffer.from(inputs[cnt]));
+
                             phase++;
                             break;
                         case 3:
@@ -86,6 +125,17 @@ router.get('/test',async (req,res)=>{
                             phase++;
                             break;
                         case 4:
+                            if(!line.includes('-----myTime-----')){
+                                output.error="내 코드 출력초과"
+                                line='error'
+
+                                killDocker()
+                                resolve()
+                            }
+                            line=line.replace('-----myTime-----','')
+
+
+
                             output.myTime=line
                             output.input=inputs[cnt]
                             if(output.myOutput==output.testOutput){//정답인지 체크
@@ -95,11 +145,11 @@ router.get('/test',async (req,res)=>{
                             }
                             
                             outputs.push(output)
-                            console.log(output)
                             output={}
                             cnt++;
-                            if (cnt==3)
+                            if (cnt==problemNum)
                                 break;
+                            
                             docker.stdin.write(Buffer.from(inputs[cnt]));
                             phase=1;
                             break;
@@ -111,10 +161,15 @@ router.get('/test',async (req,res)=>{
 
                 docker.on('close',()=>{
                     console.log('closed!!!')
-                    console.log(outputs)
+                    resolve()
+
+                    //console.log(outputs)
                 })
 
         })
+        if (outputs[outputs.length-1]&&outputs[outputs.length-1].myTime)
+            outputs[outputs.length-1].myTime=outputs[outputs.length-1].myTime.replace("\n-----end-----","")
+        console.log('111111111')
         res.status(200).send({
             success:true,
             outputs
@@ -122,13 +177,72 @@ router.get('/test',async (req,res)=>{
         
     } catch (error) {
         console.log(error)
-        res.status(500).send({
-            result: outputs,
-            message: error
+        console.log('2222222')
+
+        res.status(200).send({
+            outputs,
+            success:false,
+            err:error
         })
     }
+    finally{
+        fs.rmdirSync(tempPath,{recursive: true})
+        console.log('final')
+        
+    }
+})
 
+router.post('/:problemId/like',auth,async(req,res)=>{
+    const problemId=req.params.problemId
+    const userId=req.user._id
+    const problem=await Problem.findOne({_id:problemId})
+
+    if(problem.like.includes(userId)){
+        Problem.findOneAndUpdate({_id:problemId},
+                {
+                    $pull:{"dislike":userId,"like":userId}
+                },
+                {new:true}
+            ).then(()=>{ res.send(200)})
+            .catch(()=>{res.send(400)})
+
+    }else{
+        Problem.findOneAndUpdate({_id:problemId},
+            {
+                $addToSet:{"like":[userId]},
+                $pull:{'dislike':userId}
+            },
+            {new:true}
+        ).then(()=>{ res.send(200) })
+        .catch(()=>{res.send(400)})
+    }
+})
+
+router.post('/:problemId/dislike',auth,async (req,res)=>{
+    const problemId=req.params.problemId
+    const userId=req.user._id
+    const problem=await Problem.findOne({_id:problemId})
     
+    if(problem.dislike.includes(userId)){
+        Problem.findOneAndUpdate({_id:problemId},
+                {
+                    $pull:{"dislike":userId,"like":userId}
+                },
+                {new:true}
+            ).then(()=>{ res.send(200)})
+            .catch(()=>{res.send(400)})
+
+    }else{
+        Problem.findOneAndUpdate({_id:problemId},
+            {
+                $addToSet:{"dislike":[userId]},
+                $pull:{'like':userId}
+            },
+            {new:true}
+        ).then(()=>{ res.send(200) })
+        .catch(()=>{res.send(400)})
+    }
+
 })
 
 module.exports=router

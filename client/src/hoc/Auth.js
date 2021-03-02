@@ -15,7 +15,7 @@ export default function (SpecificComponent) {
                 } 
             })
         }, [])
-        return (<SpecificComponent />)
+        return (<SpecificComponent {...props}/>)
     }
     return AuthCheck
 }
