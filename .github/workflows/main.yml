@@ -37,4 +37,6 @@ jobs:
 
       - name: Build                   # React Build
         working-directory: ./client
+        env:
+          CI: ""
         run: npm run build
