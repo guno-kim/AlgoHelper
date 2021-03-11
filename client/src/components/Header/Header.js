@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import {logout} from '../../actions/user_action'
 
-import axios from 'axios'
 function Header(props) {
     const auth = useSelector(state => state.user.auth)
     const dispatch = useDispatch();
