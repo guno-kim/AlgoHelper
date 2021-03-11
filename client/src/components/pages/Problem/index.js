@@ -1,6 +1,6 @@
 import React,{useEffect,useState,useRef} from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
+import axios from '../../../axios'
 import { useSelector } from 'react-redux'
 
 import { UpOutlined,DownOutlined } from '@ant-design/icons';
