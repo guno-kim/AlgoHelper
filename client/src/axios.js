@@ -1,9 +1,8 @@
 import axios from 'axios';
-import queryString from 'querystring';
 
 
 const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_API,
+    baseURL: 'http://ec2-3-35-209-162.ap-northeast-2.compute.amazonaws.com'
 })
 
 export default axiosClient;

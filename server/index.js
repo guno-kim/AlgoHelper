@@ -11,6 +11,17 @@ const bodyParser = require('body-parser');
 const path=require('path')
 require('dotenv').config({ path: path.join(__dirname, './.env') })
 
+app.use((req,res,next)=>{
+    let whitelist=[
+        'http://localhost:3000',
+        'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
+    ]
+    let origin = req.headers.origin;
+    if (whitelist.indexOf(origin) > -1) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    next()
+})
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
