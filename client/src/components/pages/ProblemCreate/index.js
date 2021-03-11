@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useRef} from 'react'
 import {Button,Input,Form,Modal} from 'antd'
-import axios from 'axios'
+import axios from '../../../axios'
 import styled from 'styled-components'
 import Layout from '../../Layout/Layout'
 import { withRouter } from 'react-router-dom';

@@ -3,7 +3,7 @@ import CodeBox from '../../commons/CodeBox/CodeBox'
 import {useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import {Button,Table,Modal, Result} from 'antd'
-import axios from 'axios'
+import axios from '../../../axios'
 
 function Test() {
     const location=useLocation()
