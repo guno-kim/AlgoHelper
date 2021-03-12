@@ -21,7 +21,7 @@ router.get('/login/callback',
       res.cookie('logintoken',token,{
           httpOnly:true
       })
-      res.redirect('http://localhost:3000')
+      res.redirect('http://algohelper.s3-website.ap-northeast-2.amazonaws.com')
   });
 
 router.get('/auth',async (req,res)=>{
