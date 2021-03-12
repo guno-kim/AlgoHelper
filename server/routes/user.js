@@ -14,10 +14,8 @@ router.get('/login', passport.authenticate('google', { scope:['profile']}));
 router.get('/login/callback',
   passport.authenticate('google'),
   async (req,res)=>{
-      console.log(req.user._json.sub)
-      console.log(req.user._json.name)
-      console.log(req.user.provider)
       const token=await User.handleLogin(req.user.provider,req.user._json.sub,req.user._json.name)//{token,name}
+      console.log('token generated : ',token)
       res.cookie('logintoken',token,{
           httpOnly:true
       })
@@ -27,8 +25,7 @@ router.get('/login/callback',
 router.get('/auth',async (req,res)=>{
     try {
         const token=req.cookies.logintoken;
-        console.log('------------')
-        console.log(req.cookies)
+        console.log('request token : ',token) 
         if(!token){
             res.json({auth:false})
         }
