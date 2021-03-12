@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {GoogleOutlined} from '@ant-design/icons'
+import axios from '../../../axios'
 function Login(props) {
     return (
         <Wrapper>
@@ -9,6 +10,15 @@ function Login(props) {
                     <div
                         className='login-button google'
                         onClick={()=>{document.location.href="http://ec2-3-35-209-162.ap-northeast-2.compute.amazonaws.com/user/login"}}
+                    >
+                        <GoogleOutlined className='logo'/>
+                        <div className='desc'>Google 로그인</div>
+                    </div>
+                    <div
+                        className='login-button google'
+                        onClick={()=>{
+                            axios.get('/user/login')
+                        }}
                     >
                         <GoogleOutlined className='logo'/>
                         <div className='desc'>Google 로그인</div>
