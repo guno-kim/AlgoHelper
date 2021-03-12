@@ -1,5 +1,5 @@
 import {AUTH_USER,LOGIN_USER,LOGOUT_USER,UPDATE_USER} from './type'
-import axios from 'axios'
+import axios from '../axios'
 export async function auth(){
     const req=await axios.get('/user/auth').then(res=>res.data)
     return{
