@@ -3,3 +3,4 @@ node_modules
 DEBUG_TEMP_PATH
 /server/.env
 TutorialKeyPair.pem
+/secrets
