@@ -35,7 +35,7 @@ app.get('/',(req,res)=>{
     console.log(req.body);
     res.cookie('test','asdasd',{
         httpOnly:true,
-        secure:false,
+        secure:true,
         sameSite:'none'
     })
     res.json({messsage:"hellow"})
