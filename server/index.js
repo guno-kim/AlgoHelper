@@ -34,7 +34,8 @@ mongoose.connect(mongoURI,{ useNewUrlParser: true,useUnifiedTopology: true,useCr
 app.get('/',(req,res)=>{
     console.log(req.body);
     res.cookie('test','asdasd',{
-        httpOnly:true
+        httpOnly:true,
+        sameSite:'none'
     })
     res.json({messsage:"hellow"})
 
