@@ -17,7 +17,8 @@ router.get('/login/callback',
       const token=await User.handleLogin(req.user.provider,req.user._json.sub,req.user._json.name)//{token,name}
       console.log('token generated : ',token)
       res.cookie('logintoken',token,{
-          httpOnly:true
+        httpOnly:true,
+        domain:'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
       })
       res.redirect('http://algohelper.s3-website.ap-northeast-2.amazonaws.com')
   });

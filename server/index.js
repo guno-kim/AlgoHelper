@@ -35,8 +35,8 @@ app.get('/',(req,res)=>{
     console.log(req.body);
     res.cookie('test','asdasd',{
         httpOnly:true,
-        secure:true,
-        sameSite:'none'
+        domain:'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
+
     })
     res.json({messsage:"hellow"})
 
