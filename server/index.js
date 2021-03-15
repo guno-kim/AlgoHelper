@@ -14,7 +14,7 @@ require('dotenv').config({ path: path.join(__dirname, './.env') })
 app.use((req,res,next)=>{
     let whitelist=[
         'http://localhost:3000',
-        'http://algohelper.ga',
+        'http://www.algohelper.ga',
     ]
     let origin = req.headers.origin;
     if (whitelist.indexOf(origin) > -1) {
