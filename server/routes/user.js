@@ -18,7 +18,7 @@ router.get('/login/callback',
       console.log('token generated : ',token)
       res.cookie('logintoken',token,{
         httpOnly:true,
-        domain:'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
+        domain:'algohelper.ga'
       })
       res.redirect('http://algohelper.s3-website.ap-northeast-2.amazonaws.com')
   });
