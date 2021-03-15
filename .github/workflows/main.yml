@@ -49,4 +49,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            client/build s3://algohelper #복사
+            client/build s3://www.algohelper.ga #복사
