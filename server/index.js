@@ -15,7 +15,6 @@ app.use((req,res,next)=>{
     let whitelist=[
         'http://localhost:3000',
         'http://algohelper.ga',
-        'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
     ]
     let origin = req.headers.origin;
     if (whitelist.indexOf(origin) > -1) {
