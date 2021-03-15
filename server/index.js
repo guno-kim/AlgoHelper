@@ -14,6 +14,7 @@ require('dotenv').config({ path: path.join(__dirname, './.env') })
 app.use((req,res,next)=>{
     let whitelist=[
         'http://localhost:3000',
+        'http://algohelper.ga',
         'http://algohelper.s3-website.ap-northeast-2.amazonaws.com'
     ]
     let origin = req.headers.origin;
@@ -47,7 +48,6 @@ app.get('/temp',(req,res)=>{
         'Location':'http://localhost:3000/problem'
     })
     res.end()
-    //res.redirect('http://localhost:3000/problem')
 })
 app.use('/data',require('./routes/data'))
 app.use('/problem',require('./routes/problem'))
