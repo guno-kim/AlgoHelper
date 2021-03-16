@@ -14,13 +14,14 @@ router.get('/login', passport.authenticate('google', { scope:['profile']}));
 router.get('/login/callback',
   passport.authenticate('google'),
   async (req,res)=>{
+      console.log('callback')
       const token=await User.handleLogin(req.user.provider,req.user._json.sub,req.user._json.name)//{token,name}
       console.log('token generated : ',token)
       res.cookie('logintoken',token,{
         httpOnly:true,
-        domain:'algohelper.ga'
+        domain:process.env.MainDomain
       })
-      res.redirect('http://www.algohelper.ga')
+      res.redirect(process.env.ClientDomain)
   });
 
 router.get('/auth',async (req,res)=>{

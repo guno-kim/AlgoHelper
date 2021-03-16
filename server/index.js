@@ -12,14 +12,16 @@ const path=require('path')
 require('dotenv').config({ path: path.join(__dirname, './.env') })
 
 app.use((req,res,next)=>{
-    let whitelist=[
+    /*let whitelist=[
         'http://localhost:3000',
         'http://www.algohelper.ga',
     ]
     let origin = req.headers.origin;
     if (whitelist.indexOf(origin) > -1) {
         res.setHeader('Access-Control-Allow-Origin', origin);
-    }
+    }*/
+    res.setHeader('Access-Control-Allow-Origin', process.env.ClientDomain);
+
     res.header("Access-Control-Allow-Credentials", true);
 
     next()
@@ -27,7 +29,7 @@ app.use((req,res,next)=>{
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
-mongoose.connect(mongoURI,{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex:true,useFindAndModify:false})
+mongoose.connect(process.env.MongoURI,{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex:true,useFindAndModify:false})
 
 
 
@@ -35,8 +37,8 @@ app.get('/',(req,res)=>{
     console.log(req.body);
     res.cookie('test','asdasd',{
         httpOnly:true,
-        domain:'algohelper.ga'
-
+        //domain:'algohelper.ga'
+        domain:process.env.MainDomain
     })
     res.json({messsage:"hellow"})
 

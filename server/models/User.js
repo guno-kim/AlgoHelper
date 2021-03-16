@@ -38,6 +38,8 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
   }
 };
 userSchema.statics.findByToken=async (token)=>{
+  console.log('token : ',token),
+  console.log('secret key : ',process.env.JWT_SECRET_KEY)
   let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
   let user=await User.findOne({_id:decoded})
   return user
