@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { List,Table,Button,Input,Form } from 'antd';
 import styled from 'styled-components'
-import axios from 'axios'
+import axios from '../../../axios'
 import Layout from '../../Layout/Layout2'
 
 function ProblemList(props) {
@@ -50,7 +50,7 @@ function ProblemList(props) {
             key:index,
             title:[`[ ${ele.id} ] ${ele.title}`,ele._id],
             date:ele.date,
-            like:ele.like-ele.dislike
+            like:ele.like.length-ele.dislike.length
         })
     })
     return (

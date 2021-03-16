@@ -99,8 +99,13 @@ function getInput(format,variableTable){
                         input+=getRandomVariable(nowVariable)+' '
                 }
             })
+            input=input.trim()
+
             input+='\n'
         })
+        input=input.trim()
+        input+='\n'
+
         resolve(input)
     })
 }

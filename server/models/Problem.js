@@ -21,17 +21,8 @@ const problemSchema=mongoose.Schema({
     testCodes:{
         type:Object
     },
-    writer:{
-
-    },
-    like:{
-        type:Number,
-        default:0
-    },
-    dislike:{
-        type:Number,
-        default:0
-    },
+    like:[mongoose.Schema.Types.ObjectId],
+    dislike:[mongoose.Schema.Types.ObjectId],
     date:{
         type:Date,
         default:Date.now

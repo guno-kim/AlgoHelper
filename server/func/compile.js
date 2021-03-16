@@ -3,9 +3,7 @@ const path = require('path');
 const rs = require('randomstring');
 const fs = require('fs-extra');
 
-const getDocker=(testCode,myCode)=>{
-    const hash = rs.generate(10);
-    const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
+const getDocker=(testCode,myCode,tempPath,hash)=>{
     fs.mkdirSync(tempPath, {recursive: true});
 
     const testFilePath = path.resolve(tempPath, 'testCode.py');
@@ -16,7 +14,8 @@ const getDocker=(testCode,myCode)=>{
     fs.createFileSync(myFilePath);
     fs.writeFileSync(myFilePath, Buffer.from(myCode));
 
-    let docker=spawn('docker',['run','--rm','-i',"-v", `${tempPath}:/src`,'python-compiler-test:1.0']);
+    let docker=spawn('docker',['run','-i','--rm',"-v", `${tempPath}:/src`,'-m','512m','--cpus','0.1','--name',hash, 'python-compiler-test:1.0']);
+    //,'--rm'  옵션 없을시 추가필요 ,'-m','2G'
     return docker
 }
 

@@ -11,6 +11,19 @@ const bodyParser = require('body-parser');
 const path=require('path')
 require('dotenv').config({ path: path.join(__dirname, './.env') })
 
+app.use((req,res,next)=>{
+    let whitelist=[
+        'http://localhost:3000',
+        'http://www.algohelper.ga',
+    ]
+    let origin = req.headers.origin;
+    if (whitelist.indexOf(origin) > -1) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header("Access-Control-Allow-Credentials", true);
+
+    next()
+})
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
@@ -20,6 +33,11 @@ mongoose.connect(mongoURI,{ useNewUrlParser: true,useUnifiedTopology: true,useCr
 
 app.get('/',(req,res)=>{
     console.log(req.body);
+    res.cookie('test','asdasd',{
+        httpOnly:true,
+        domain:'algohelper.ga'
+
+    })
     res.json({messsage:"hellow"})
 
 })
@@ -29,7 +47,6 @@ app.get('/temp',(req,res)=>{
         'Location':'http://localhost:3000/problem'
     })
     res.end()
-    //res.redirect('http://localhost:3000/problem')
 })
 app.use('/data',require('./routes/data'))
 app.use('/problem',require('./routes/problem'))
