@@ -20,7 +20,7 @@ router.get('/login/callback',
         httpOnly:true,
         domain:'algohelper.ga'
       })
-      res.redirect('http://algohelper.s3-website.ap-northeast-2.amazonaws.com')
+      res.redirect('http://algohelper.ga')
   });
 
 router.get('/auth',async (req,res)=>{
