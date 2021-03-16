@@ -9,7 +9,7 @@ function Login(props) {
                 <div className="button-box">
                     <div
                         className='login-button google'
-                        onClick={()=>{document.location.href="http://ec2-3-35-209-162.ap-northeast-2.compute.amazonaws.com/user/login"}}
+                        onClick={()=>{document.location.href="http://api.algohelper.ga/user/login"}}
                     >
                         <GoogleOutlined className='logo'/>
                         <div className='desc'>Google 로그인</div>
