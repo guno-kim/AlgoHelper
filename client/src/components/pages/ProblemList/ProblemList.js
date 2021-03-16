@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { List,Table,Button,Input,Form } from 'antd';
 import styled from 'styled-components'
-import axios from 'axios'
+import axios from '../../../axios'
 import Layout from '../../Layout/Layout2'
 
 function ProblemList(props) {
