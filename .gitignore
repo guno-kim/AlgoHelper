@@ -2,7 +2,6 @@ node_modules
 DEBUG_TEMP_PATH
 TutorialKeyPair.pem
 /secrets
-/client/eslintcache
 /client/.env
 /server/.env
 \server\.env

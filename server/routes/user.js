@@ -21,7 +21,7 @@ router.get('/login/callback',
         httpOnly:true,
         domain:process.env.MainDomain
       })
-      res.redirect(process.env.ClientDomain)
+      res.redirect(`${process.env.ClientDomain}/user/profile`)
   });
 
 router.get('/auth',async (req,res)=>{
