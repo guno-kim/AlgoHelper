@@ -1,0 +1,22 @@
+https://github.com/guno-kim/AlgoHelper.git
+
+	
+
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 5000 // 80포트 5000으로 리다이렉트, 인스턴스 재부팅시 필요
+
+pm2 start AlgoHelper/server/index.js
+
+aws ec2 주소
+http://ec2-3-35-209-162.ap-northeast-2.compute.amazonaws.com
+aws s3 주소 : 
+http://algohelper.s3-website.ap-northeast-2.amazonaws.com
+
+포트 사용 프로세스 찾기
+lsof -i TCP:5000
+
+서버 배포
+1.콘솔 로그인
+2.server server 에서 git pull origin deploy
+
+로그
+pm2 log --lines 100

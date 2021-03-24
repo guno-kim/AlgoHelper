@@ -50,7 +50,7 @@ router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
     let outputs=[],output={}
-    let cnt=0,phase=0,problemNum=10;
+    let cnt=0,phase=0,problemNum=11;
     const hash = rs.generate(10);
     const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
     try {
@@ -82,6 +82,7 @@ router.get('/test',async (req,res)=>{
                     }
                     outputs.push(output)
                     killDocker()
+                    outputs.shift()
                     resolve()
 
                 })
@@ -95,7 +96,9 @@ router.get('/test',async (req,res)=>{
                     if (line.includes("-----end-----")){
                         console.log('ended')
                         line=line.replace("-----end-----\n","")
+                        outputs.shift()
                         resolve()
+                        return
                     }
                     switch (phase) {
                         case 0:
@@ -112,6 +115,7 @@ router.get('/test',async (req,res)=>{
                                 line='error'
                                 killDocker()
                                 resolve()
+                                return
                             }
                             line=line.replace('-----testTime-----','')
 
@@ -131,10 +135,10 @@ router.get('/test',async (req,res)=>{
 
                                 killDocker()
                                 resolve()
+                                return
+
                             }
                             line=line.replace('-----myTime-----','')
-
-
 
                             output.myTime=line
                             output.input=inputs[cnt]
@@ -147,7 +151,7 @@ router.get('/test',async (req,res)=>{
                             outputs.push(output)
                             output={}
                             cnt++;
-                            if (cnt==problemNum)
+                            if (cnt==problemNum || !inputs[cnt])
                                 break;
                             
                             docker.stdin.write(Buffer.from(inputs[cnt]));
@@ -156,28 +160,22 @@ router.get('/test',async (req,res)=>{
                         default:
                             break;
                     }
-                 
                 })
 
                 docker.on('close',()=>{
                     console.log('closed!!!')
                     resolve()
-
-                    //console.log(outputs)
                 })
-
         })
         if (outputs[outputs.length-1]&&outputs[outputs.length-1].myTime)
             outputs[outputs.length-1].myTime=outputs[outputs.length-1].myTime.replace("\n-----end-----","")
-        console.log('111111111')
         res.status(200).send({
             success:true,
             outputs
         })
         
     } catch (error) {
-        console.log(error)
-        console.log('2222222')
+        console.log('---- error whlie test----\n',error)
 
         res.status(200).send({
             outputs,

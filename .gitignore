@@ -2,7 +2,6 @@ node_modules
 DEBUG_TEMP_PATH
 TutorialKeyPair.pem
 /secrets
-/client/.env
 /server/.env
 \server\.env
 C:\Users\김건오\Desktop\AlgoHelper\server\.env
