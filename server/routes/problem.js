@@ -96,6 +96,7 @@ router.get('/test',async (req,res)=>{
                         console.log('ended')
                         line=line.replace("-----end-----\n","")
                         resolve()
+                        return
                     }
                     switch (phase) {
                         case 0:
@@ -112,6 +113,7 @@ router.get('/test',async (req,res)=>{
                                 line='error'
                                 killDocker()
                                 resolve()
+                                return
                             }
                             line=line.replace('-----testTime-----','')
 
@@ -131,6 +133,8 @@ router.get('/test',async (req,res)=>{
 
                                 killDocker()
                                 resolve()
+                                return
+
                             }
                             line=line.replace('-----myTime-----','')
 
