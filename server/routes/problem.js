@@ -82,6 +82,7 @@ router.get('/test',async (req,res)=>{
                     }
                     outputs.push(output)
                     killDocker()
+                    outputs.shift()
                     resolve()
 
                 })
@@ -95,6 +96,7 @@ router.get('/test',async (req,res)=>{
                     if (line.includes("-----end-----")){
                         console.log('ended')
                         line=line.replace("-----end-----\n","")
+                        outputs.shift()
                         resolve()
                         return
                     }
