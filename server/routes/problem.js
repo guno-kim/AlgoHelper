@@ -145,7 +145,7 @@ router.get('/test',async (req,res)=>{
                             outputs.push(output)
                             output={}
                             cnt++;
-                            if (cnt==problemNum && !inputs[cnt])
+                            if (cnt==problemNum || !inputs[cnt])
                                 break;
                             
                             docker.stdin.write(Buffer.from(inputs[cnt]));
