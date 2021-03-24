@@ -50,7 +50,7 @@ router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
     let outputs=[],output={}
-    let cnt=0,phase=0,problemNum=10;
+    let cnt=0,phase=0,problemNum=11;
     const hash = rs.generate(10);
     const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
     try {
