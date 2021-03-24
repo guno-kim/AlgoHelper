@@ -134,8 +134,6 @@ router.get('/test',async (req,res)=>{
                             }
                             line=line.replace('-----myTime-----','')
 
-
-
                             output.myTime=line
                             output.input=inputs[cnt]
                             if(output.myOutput==output.testOutput){//정답인지 체크
@@ -147,7 +145,7 @@ router.get('/test',async (req,res)=>{
                             outputs.push(output)
                             output={}
                             cnt++;
-                            if (cnt==problemNum)
+                            if (cnt==problemNum && !inputs[cnt])
                                 break;
                             
                             docker.stdin.write(Buffer.from(inputs[cnt]));
@@ -156,28 +154,22 @@ router.get('/test',async (req,res)=>{
                         default:
                             break;
                     }
-                 
                 })
 
                 docker.on('close',()=>{
                     console.log('closed!!!')
                     resolve()
-
-                    //console.log(outputs)
                 })
-
         })
         if (outputs[outputs.length-1]&&outputs[outputs.length-1].myTime)
             outputs[outputs.length-1].myTime=outputs[outputs.length-1].myTime.replace("\n-----end-----","")
-        console.log('111111111')
         res.status(200).send({
             success:true,
             outputs
         })
         
     } catch (error) {
-        console.log(error)
-        console.log('2222222')
+        console.log('---- error whlie test----\n',error)
 
         res.status(200).send({
             outputs,
