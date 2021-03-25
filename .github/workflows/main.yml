@@ -64,9 +64,6 @@ jobs:
     steps:
 
       - uses: actions/checkout@master
-      
-
-            
 
       - name: Install AWS CLI 2
         run: |
@@ -88,7 +85,7 @@ jobs:
           --description "This is a revision for the ${{ matrix.appname }}-${{ github.sha }}" \
           --ignore-hidden-files \
           --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
-          --source .
+          --source ./server
 
       - name: AWS Create Deployment 
         run: |
