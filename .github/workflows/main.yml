@@ -90,7 +90,7 @@ jobs:
           --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
           --source .
 
-      - name: AWS Create Deployment #--deployment-group-name ${{ matrix.deploy-group }} \
+      - name: AWS Create Deployment
         run: |
           aws deploy create-deployment \
            --application-name ${{ matrix.appname }} \
