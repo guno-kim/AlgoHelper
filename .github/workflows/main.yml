@@ -13,7 +13,7 @@ jobs:
         id: server-cache
         uses: actions/cache@v2
         with:
-          path: node_modules
+          path: ./server/node_modules
           key: ${{ runner.OS }}-server-module-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-server-module-
@@ -40,13 +40,56 @@ jobs:
         env:
           CI: ""
         run: npm run build
+  deploy:
+    runs-on: ubuntu-18.04
+    needs: build
+    strategy:
+      matrix:
+        appname: ['aws-codedeploy']
+        deploy-group: ['staging']
+        s3-bucket: ['algohelper-codedeploy']
+        s3-filename: ['algohelper-aws-codedeploy-${{ github.sha }}']
+    steps:
 
-      - name: Deploy                  # S3에 배포하기
+      - uses: actions/checkout@master
+      
+      - name: client-deploy                  # S3에 배포하기
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CLIENT_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CLIENT_SECRET_ACCESS_KEY }}
         run: |
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
             client/build s3://www.algohelper.ga #복사
+            
+
+      - name: Install AWS CLI 2
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+            
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_SERVER_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SERVER_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2      
+
+      - name: AWS Deploy push
+        run: |
+          aws deploy push \
+          --application-name ${{ matrix.appname }} \
+          --description "This is a revision for the ${{ matrix.appname }}-${{ github.sha }}" \
+          --ignore-hidden-files \
+          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
+          --source .
+
+      - name: AWS Create Deployment #--deployment-group-name ${{ matrix.deploy-group }} \
+        run: |
+          aws deploy create-deployment \
+           --application-name ${{ matrix.appname }} \
+           --deployment-config-name CodeDeployDefault.OneAtATime \
+           --file-exists-behavior OVERWRITE \
+           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \

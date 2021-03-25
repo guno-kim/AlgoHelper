@@ -1,5 +1,6 @@
 https://github.com/guno-kim/AlgoHelper.git
 
+ssh -i "C:\Users\김건오\Desktop\AlgoHelper\secrets\TutorialKeyPair.pem" ubuntu@ec2-3-35-209-162.ap-northeast-2.compute.amazonaws.com
 	
 
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 5000 // 80포트 5000으로 리다이렉트, 인스턴스 재부팅시 필요
@@ -20,3 +21,17 @@ lsof -i TCP:5000
 
 로그
 pm2 log --lines 100
+
+
+wget https://aws-codedeploy-ap-northeast-2.s3.ap-northeast-2.amazonaws.com/latest/install
+
+apt-get update
+apt-get install -y ruby
+wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/releases/codedeploy-agent_1.0-1.1597_all.deb
+mkdir codedeploy-agent_1.0-1.1597_ubuntu20
+dpkg-deb -R codedeploy-agent_1.0-1.1597_all.deb codedeploy-agent_1.0-1.1597_ubuntu20
+sed 's/2.0/2.7/' -i ./codedeploy-agent_1.0-1.1597_ubuntu20/DEBIAN/control
+dpkg-deb -b codedeploy-agent_1.0-1.1597_ubuntu20
+dpkg -i codedeploy-agent_1.0-1.1597_ubuntu20.deb
+systemctl start codedeploy-agent
+systemctl enable codedeploy-agen
