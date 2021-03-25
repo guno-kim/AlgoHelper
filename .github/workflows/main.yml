@@ -57,7 +57,7 @@ jobs:
     strategy:
       matrix:
         appname: ['algohelper-codedeploy']
-        deploy-group: ['staging']
+        deploy-group: ['algohelper-deploy']
         s3-bucket: ['algohelper-codedeploy']
         s3-filename: ['algohelper-aws-codedeploy-${{ github.sha }}']
     
@@ -90,10 +90,11 @@ jobs:
           --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
           --source .
 
-      - name: AWS Create Deployment
+      - name: AWS Create Deployment 
         run: |
           aws deploy create-deployment \
            --application-name ${{ matrix.appname }} \
            --deployment-config-name CodeDeployDefault.OneAtATime \
+           --deployment-group-name ${{ matrix.deploy-group }} \
            --file-exists-behavior OVERWRITE \
            --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
