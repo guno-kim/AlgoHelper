@@ -54,17 +54,8 @@ jobs:
 
       - uses: actions/checkout@master
 
-      - name: Cache Server node modules      # server node modules 캐싱
-        id: server-cache
-        uses: actions/cache@v2
-        with:
-          path: ./server/node_modules
-          key: ${{ runner.OS }}-server-module-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-server-module-
 
       - name: Install Server Dependencies   
-        if: steps.server-cache.outputs.cache-hit != 'true'
         working-directory: ./server
         run: npm install
 
