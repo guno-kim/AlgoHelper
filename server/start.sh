@@ -1,2 +1,1 @@
-cd home/
-echo 'start!!!'
+pm2 startOrReload index.js
