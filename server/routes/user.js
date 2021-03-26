@@ -42,7 +42,9 @@ router.get('/auth',async (req,res)=>{
 })
 
 router.get('/logout',(req,res)=>{
-    res.clearCookie('logintoken')
+    res.clearCookie('logintoken',{
+        domain:process.env.MainDomain
+    })
     res.json({success:true})
 });
 
