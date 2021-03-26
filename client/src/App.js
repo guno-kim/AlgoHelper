@@ -15,13 +15,13 @@ function App() {
       <BrowserRouter>
         <Header></Header>      
         <Switch>
-          <Route exact path='/' component={LandingPage}></Route>
-          <Route exact path='/problem/create' component={Auth(ProblemCreate)}></Route>
-          <Route exact path='/problem' component={ProblemList}></Route>
-          <Route exact path='/problem/:problem_Id' component={Auth(Problem)}></Route>
-          <Route exact path='/problem/:problem_Id/test' component={Test}></Route>
-          <Route exact path='/user/profile' component={Auth(Profile)}></Route>
-          <Route exact path='/user/login' component={Login}></Route>
+          <Route exact path='/' component={Auth(LandingPage,false)}></Route>
+          <Route exact path='/problem/create' component={Auth(ProblemCreate,true)}></Route>
+          <Route exact path='/problem' component={Auth(ProblemList,false)}></Route>
+          <Route exact path='/problem/:problem_Id' component={Auth(Problem,true)}></Route>
+          <Route exact path='/problem/:problem_Id/test' component={Auth(Test,true)}></Route>
+          <Route exact path='/user/profile' component={Auth(Profile,tru)}></Route>
+          <Route exact path='/user/login' component={Auth(Login,false)}></Route>
         </Switch>
       </BrowserRouter>
     </div>

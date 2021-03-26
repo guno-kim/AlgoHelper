@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import {auth} from '../actions/user_action'
 
-export default function (SpecificComponent) {
+export default function (SpecificComponent,needAuth) {
 
     function AuthCheck(props) {
         const dispatch = useDispatch();
@@ -10,7 +10,7 @@ export default function (SpecificComponent) {
 
             dispatch(auth()).then(response => {
                 console.log(response)
-                if (!response.auth) {
+                if (needAuth&&!response.auth) {
                     props.history.push('/user/login')
                 } 
             })
