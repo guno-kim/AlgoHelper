@@ -32,7 +32,7 @@ function Header(props) {
                         className='sign-button'    
                         onClick={()=>{
                         dispatch(logout())
-                        //document.location.reload()
+                        document.location.reload()
                     }}>로그아웃</button>
                     :(<button className='sign-button'>
                         <NavLink to='/user/login' exact style={{color:'black'}}>로그인</NavLink>
