@@ -20,7 +20,7 @@ function App() {
           <Route exact path='/problem' component={Auth(ProblemList,false)}></Route>
           <Route exact path='/problem/:problem_Id' component={Auth(Problem,true)}></Route>
           <Route exact path='/problem/:problem_Id/test' component={Auth(Test,true)}></Route>
-          <Route exact path='/user/profile' component={Auth(Profile,tru)}></Route>
+          <Route exact path='/user/profile' component={Auth(Profile,true)}></Route>
           <Route exact path='/user/login' component={Auth(Login,false)}></Route>
         </Switch>
       </BrowserRouter>
