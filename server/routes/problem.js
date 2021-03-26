@@ -9,7 +9,8 @@ const {Problem}=require('../models/Problem')
 const {getDocker}=require('../func/compile')
 const {getExample,getInputs}=require('../func/dataGenerate');
 const { resolve } = require('path');
-const {auth}=require('../middleware/auth')
+const {auth}=require('../middleware/auth');
+const { anySeries } = require('async');
 
 router.get('/',async (req,res)=>{
     const problem=await Problem.findOne({_id:req.query._id})
@@ -49,27 +50,29 @@ router.post('/create',auth,(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
-    let outputs=[],output={}
-    let cnt=0,phase=0,problemNum=11;
-    const hash = rs.generate(10);
-    const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
+    let problemNum=11;
+    const hash1 = rs.generate(10);
+    const hash2 = rs.generate(10);
     try {
-        await new Promise(async (resolve)=>{
-                const docker=getDocker(problem.testCodes.code,problem.myCode.code,tempPath,hash)
-                const inputs=await getInputs(problem,problemNum)
-                console.log(inputs)
+        const inputs=await getInputs(problem,problemNum)
+
+        function test(code,hash){ // 채점 함수
+            let outputs=[],output={},cnt=0,phase=0
+            const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
+
+            return new Promise(async (resolve)=>{
+                const docker=getDocker(code,tempPath,hash)
                 function killDocker(){
                     spawn('docker',['kill',hash])//리눅스에서 자식 프로세스는 따로 종료해야한다.
                     docker.kill('SIGINT')
                 }
-
                 setTimeout(() => {
                     console.log('Timeout')
                     output.result='런타임오류'
                     output.error='런타임오류'
                     outputs.push(output)
                     killDocker()
-                    resolve()
+                    resolve(outputs)
                 }, 10*1000);
                 docker.stderr.on("data", (data) => {
                     console.log('error!!! :',data.toString('utf-8'));
@@ -82,10 +85,9 @@ router.get('/test',async (req,res)=>{
                     }
                     outputs.push(output)
                     killDocker()
-                    outputs.shift()
                     resolve()
-
                 })
+
 
                 docker.stdout.on('data', (data)=>{
                     let line = data.toString('utf-8').trim();
@@ -97,7 +99,7 @@ router.get('/test',async (req,res)=>{
                         console.log('ended')
                         line=line.replace("-----end-----\n","")
                         outputs.shift()
-                        resolve()
+                        resolve(outputs)
                         return
                     }
                     switch (phase) {
@@ -106,57 +108,36 @@ router.get('/test',async (req,res)=>{
                             phase++;
                             break;
                         case 1:
-                            output.testOutput=line;
+                            output.data=line;
                             phase++;
                             break;
                         case 2:
-                            if(!line.includes('-----testTime-----')){
+                            if(!line.includes('-----time-----')){ //출력이 버퍼에 넘칠때
                                 output.error="정답 코드 출력초과"
                                 line='error'
                                 killDocker()
-                                resolve()
+                                resolve(outputs)
                                 return
                             }
-                            line=line.replace('-----testTime-----','')
-
-                            output.testTime=line;
-                            docker.stdin.write(Buffer.from(inputs[cnt]));
-
-                            phase++;
-                            break;
-                        case 3:
-                            output.myOutput=line;
-                            phase++;
-                            break;
-                        case 4:
-                            if(!line.includes('-----myTime-----')){
-                                output.error="내 코드 출력초과"
+                            let token=line.split('-----time-----')
+                            if(token[0]!=cnt){ //입력이 더 많이 됐을때
+                                output.error="입력 초과"
                                 line='error'
-
                                 killDocker()
-                                resolve()
+                                resolve(outputs)
                                 return
-
                             }
-                            line=line.replace('-----myTime-----','')
-
-                            output.myTime=line
-                            output.input=inputs[cnt]
-                            if(output.myOutput==output.testOutput){//정답인지 체크
-                                output.result='correct'
-                            }else{
-                                output.result='wrong'
-                            }
-                            
+                            output.time=token[1]
                             outputs.push(output)
                             output={}
-                            cnt++;
-                            if (cnt==problemNum || !inputs[cnt])
-                                break;
-                            
+                            cnt++
+                            if(cnt==problemNum){
+                                killDocker()
+                                resolve(outputs)
+                                return
+                            }
+                            phase=1
                             docker.stdin.write(Buffer.from(inputs[cnt]));
-                            phase=1;
-                            break;
                         default:
                             break;
                     }
@@ -164,16 +145,28 @@ router.get('/test',async (req,res)=>{
 
                 docker.on('close',()=>{
                     console.log('closed!!!')
-                    resolve()
+                    resolve(outputs)
                 })
-        })
-        if (outputs[outputs.length-1]&&outputs[outputs.length-1].myTime)
-            outputs[outputs.length-1].myTime=outputs[outputs.length-1].myTime.replace("\n-----end-----","")
+            })
+        }
+
+        let answerResult= await test(problem.testCodes.code,hash1)
+        let myResult= await test(problem.myCode.code,hash2)
+        let outputs=[]
+        for(let i=0;i<Math.min(answerResult.length,myResult.length);i++){
+            let output={}
+            output.myOutput=myResult[i].data;
+            output.myTime=myResult[i].time;
+            output.answerOutput=answerResult[i].data;
+            output.answerTime=answerResult[i].time;
+            output.correct= myResult[i].data==answerResult[i].data? 'correct':'fail'
+            output.input=inputs[i]
+            outputs.push(output)
+        }
         res.status(200).send({
             success:true,
             outputs
         })
-        
     } catch (error) {
         console.log('---- error whlie test----\n',error)
 
@@ -184,9 +177,9 @@ router.get('/test',async (req,res)=>{
         })
     }
     finally{
-        fs.rmdirSync(tempPath,{recursive: true})
+        fs.rmdirSync(path.resolve("DEBUG_TEMP_PATH", hash1),{recursive: true})
+        fs.rmdirSync(path.resolve("DEBUG_TEMP_PATH", hash2),{recursive: true})
         console.log('final')
-        
     }
 })
 

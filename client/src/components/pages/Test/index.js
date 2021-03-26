@@ -34,8 +34,8 @@ function Test() {
         return outputs.map((output,idx)=>({
             idx:idx,
             myTime:output.myTime+' ms',
-            testTime:output.testTime+' ms',
-            result:output.result
+            answerTime:output.answerTime+' ms',
+            correct:output.correct
         }))
     }
     const showModal=(idx)=>{ 
@@ -45,8 +45,8 @@ function Test() {
     const columns=[
         {title:"번호",dataIndex:'idx',align:'center'},
         {title:'내 시간',dataIndex:'myTime',align:'center'},
-        {title:'정답 시간',dataIndex:'testTime',align:'center'},
-        {title:'결과',dataIndex:'result',align:'center'},
+        {title:'정답 시간',dataIndex:'answerTime',align:'center'},
+        {title:'결과',dataIndex:'correct',align:'center'},
         {
             title:'데이터 확인',dataIndex:'idx',
             render:(idx)=><Button onClick={()=>{showModal(idx)}}>확인</Button>
@@ -113,7 +113,7 @@ function Test() {
                                 <h3>정답</h3>
                             </div>
                             <textarea 
-                                value={Outputs[ModalIndex]&&Outputs[ModalIndex].testOutput}
+                                value={Outputs[ModalIndex]&&Outputs[ModalIndex].answerOutput}
                                 style={{
                                     width:'300px',
                                     height:'300px',
