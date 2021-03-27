@@ -20,7 +20,6 @@ app.use(express.json())
 mongoose.connect(process.env.MongoURI,{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex:true,useFindAndModify:false})
 
 app.get('/',(req,res)=>{
-    console.log(req.body);
     res.cookie('test','asdasd',{
         httpOnly:true,
         //domain:'algohelper.ga'

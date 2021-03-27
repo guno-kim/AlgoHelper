@@ -9,7 +9,6 @@ export default function (SpecificComponent,needAuth) {
         useEffect(() => {
 
             dispatch(auth()).then(response => {
-                console.log(response)
                 if (needAuth&&!response.auth) {
                     props.history.push('/user/login')
                 } 

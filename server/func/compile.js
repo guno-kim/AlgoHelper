@@ -10,7 +10,7 @@ const getDocker=(testCode,tempPath,hash)=>{
     fs.createFileSync(testFilePath);
     fs.writeFileSync(testFilePath, Buffer.from(testCode));
 
-    let docker=spawn('docker',['run','-i','--rm',"-v", `${tempPath}:/src`,'-m','512m','--cpus','0.1','--name',hash, 'python-compiler-test:1.0']);
+    let docker=spawn('docker',['run','-i','--rm',"-v", `${tempPath}:/src`,'-m','512m','--cpus','0.2','--name',hash, 'python-compiler-test:1.0']);
     //,'--rm'  옵션 없을시 추가필요 ,'-m','2G'
     return docker
 }

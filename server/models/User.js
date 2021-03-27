@@ -22,14 +22,12 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
   try{
     const userInfo={provider,id}
     let user=await User.findOne(userInfo)
-    console.log(user)
     if(!user){
       const newUser=new User({...userInfo,name})
       await newUser.save()
         .then(console.log('saved'))
     }
     user=await User.findOne(userInfo)
-    console.log(user._id)
     const token=jwt.sign(user._id.toHexString(),process.env.JWT_SECRET_KEY)
     return token
   }catch(err){
@@ -38,8 +36,6 @@ userSchema.statics.handleLogin = async function(provider,id,name) {
   }
 };
 userSchema.statics.findByToken=async (token)=>{
-  console.log('token : ',token),
-  console.log('secret key : ',process.env.JWT_SECRET_KEY)
   let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
   let user=await User.findOne({_id:decoded})
   return user

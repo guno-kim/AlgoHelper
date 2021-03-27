@@ -44,15 +44,21 @@ function Test() {
     }
     const columns=[
         {title:"번호",dataIndex:'idx',align:'center'},
-        {title:'내 시간',dataIndex:'myTime',align:'center'},
         {title:'정답 시간',dataIndex:'answerTime',align:'center'},
+        {title:'내 시간',dataIndex:'myTime',align:'center'},
         {title:'결과',dataIndex:'correct',align:'center'},
         {
             title:'데이터 확인',dataIndex:'idx',
             render:(idx)=><Button onClick={()=>{showModal(idx)}}>확인</Button>
         }
     ]
-
+    const textAreaStyle={
+        width:'300px',
+        height:'300px',
+        overflowX:'scroll auto',
+        overflowY:'scroll auto',
+        whiteSpace:'nowrap'
+    }
     function copyToClipboard(e) {
         textAreaRef.current.select();//텍스트 선택
         document.execCommand('copy');//복사
@@ -61,7 +67,6 @@ function Test() {
     return (
         <div style={{display:'flex',justifyContent:'center'}}>
             <Wrapper>
-
                 <div className="content-container">
                     <h1 className='title'>테스트 결과</h1>
                     <h3 className='description'>테스트할 코드를 작성하세요</h3>
@@ -82,49 +87,29 @@ function Test() {
                         <textarea 
                             ref={textAreaRef}
                             value={Outputs[ModalIndex]&&Outputs[ModalIndex].input}
-                            style={{
-                                width:'300px',
-                                height:'300px',
-                                overflowX:'scroll auto',
-                                overflowY:'scroll auto',
-                            }}
+                            style={textAreaStyle}
                         />
                     </div>
                    
                     <div style={{display:'flex'}}>
                         <div style={{display:'flex',flexDirection:'column',width:'300px'}}>
-                            <div style={{display:'flex', justifyContent:'center'}}>
-                                <h3>내 결과</h3>
-                            </div>
-                            <textarea 
-                                value={Outputs[ModalIndex]&&Outputs[ModalIndex].myOutput}
-                                style={{
-                                    width:'300px',
-                                    height:'300px',
-                                    overflowX:'scroll auto',
-                                    overflowY:'scroll auto',
-                                    whiteSpace:'nowrap'
-                                }}
-                            />
-                        </div>
-                        
-                        <div style={{display:'flex',flexDirection:'column',width:'300px'}}>
-                            <div style={{display:'flex', justifyContent:'center'}}>
-                                <h3>정답</h3>
-                            </div>
+                            <h3 style={{textAlign:'center'}}>정답</h3>
                             <textarea 
                                 value={Outputs[ModalIndex]&&Outputs[ModalIndex].answerOutput}
-                                style={{
-                                    width:'300px',
-                                    height:'300px',
-                                    overflowX:'scroll auto',
-                                    overflowY:'scroll auto',
-                                    whiteSpace:'nowrap'
-                                }}
+                                style={textAreaStyle}
                             />
+                            <div style={{color:'red',textAlign:'center'}}>{Outputs[ModalIndex]&&Outputs[ModalIndex].answerError}</div>
+                        </div>
+
+                        <div style={{display:'flex',flexDirection:'column',width:'300px'}}>
+                            <h3 style={{textAlign:'center'}}>내 결과</h3>
+                            <textarea 
+                                value={Outputs[ModalIndex]&&Outputs[ModalIndex].myOutput}
+                                style={textAreaStyle}
+                            />
+                            <div style={{color:'red',textAlign:'center'}}>{Outputs[ModalIndex]&&Outputs[ModalIndex].myError}</div>
                         </div>
                     </div>
-                    <div style={{color:'red'}}>{Outputs[ModalIndex]&&Outputs[ModalIndex].error}</div>
                 </Modal>
             </Wrapper>
           
