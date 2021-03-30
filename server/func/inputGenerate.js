@@ -1,3 +1,4 @@
+const {Variable,VariableTable}=require('./vairables')
 function getRandomVariable(variable){
     switch (variable.type) {
         case 'int':
@@ -10,26 +11,15 @@ function getRandomVariable(variable){
 
 function getVariableTable(variableList){
     return new Promise((resolve,reject)=>{
-
-        let variables={}
-        for(v of variableList){
-
-            if(variables[v.name]){
-                reject({error:'duplicate variable'})
-                variables={error:"중복된 변수 이름"}
-                break
-            }else
-                variables[v.name]=v
-            
-
-
-            if(v.fix)
-                variables[v.name].value=getRandomVariable(v)
-        
+        let table=new VariableTable()
+        for(let v of variableList){
+            table.push(new Variable(v.type,v.name,v.min,v.max,v.fix))
         }
-        resolve(variables)
+        table.init()
+        resolve(table)
     })
 }
+
 function getFormat(inputBlocks,variableTable){
     return new Promise((resolve,reject)=>{
         let format=[]
@@ -49,8 +39,8 @@ function getFormat(inputBlocks,variableTable){
             if(!isNaN(parseInt(inputBlock.verticalRep))){
                 vRep=inputBlock.verticalRep
             }else{
-                v=variableTable[inputBlock.verticalRep]
-                if(v&&v.type=='int'&&v.fix)
+                let v=variableTable.getVariable(inputBlock.verticalRep)
+                if(v&&v.type=='int'&&v.fix&&v.value)
                     vRep=v.value
                 else
                     reject({error:'잘못된 반복 횟수입니다.'})
@@ -58,9 +48,9 @@ function getFormat(inputBlocks,variableTable){
             if(!isNaN(parseInt(inputBlock.horizonRep))){
                 hRep=inputBlock.horizonRep
             }else{
-                v=variableTable[inputBlock.horizonRep]
-                if(v&&v.fix)
-                hRep=v.value
+                let v=variableTable.getVariable(inputBlock.horizonRep)
+                if(v&&v.type=='int'&&v.fix&&v.value)
+                    hRep=v.value
                 else
                     reject({error:'잘못된 반복 횟수입니다.'})
             }
@@ -85,22 +75,10 @@ function getInput(format,variableTable){
         let input=""
 
         format.forEach((row)=>{
-            row.forEach((item)=>{
-                if(!isNaN(parseFloat(item))){//숫자일때
-                    input+=item+' '
-                }
-                else if(!variableTable[item])
-                    reject({error:'선언하지 않은 변수가 있습니다.'})
-                else{
-                    let nowVariable=variableTable[item]
-                    if(nowVariable.fix)
-                        input+=nowVariable.value+' '
-                    else
-                        input+=getRandomVariable(nowVariable)+' '
-                }
+            row.forEach((name)=>{
+                input+=variableTable.getValue(name)+' '
             })
             input=input.trim()
-
             input+='\n'
         })
         input=input.trim()
@@ -112,8 +90,7 @@ function getInput(format,variableTable){
 function getExample(setting){
     return new Promise(async(resolve,reject)=>{  
         try{
-            let variableTable=[]
-            variableTable=await getVariableTable(setting.variables)
+            let variableTable=await getVariableTable(setting.variables)
             let format=await getFormat(setting.inputBlocks,variableTable)
             let input=await getInput(format,variableTable)
             resolve({format,input})
@@ -127,8 +104,10 @@ function getInputs(setting,cnt){
     return new Promise(async(resolve,reject)=>{  
         try{
             let inputs=[]
+            let variableTable=await getVariableTable(setting.variables)
+
             for(let i=0;i<cnt;i++){
-                let variableTable=await getVariableTable(setting.variables)
+                variableTable.init()
                 let format=await getFormat(setting.inputBlocks,variableTable)
                 let input=await getInput(format,variableTable)
                 inputs.push(input)

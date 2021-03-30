@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router();
 
-const {getExample}=require('../func/dataGenerate')
+const {getExample}=require('../func/inputGenerate')
 router.post('/generate',(req,res)=>{
     console.log('request',req.body);
     getExample(req.body)
@@ -10,7 +10,7 @@ router.post('/generate',(req,res)=>{
         })
         .catch((err)=>{
             console.log(err)
-            res.status(201).send(err)
+            res.status(201).send({error:err.message})
         })
 }
 )

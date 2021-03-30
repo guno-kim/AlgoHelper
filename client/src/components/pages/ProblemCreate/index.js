@@ -63,6 +63,7 @@ function GenerateData(props) {
             .then((res)=>{
                 if(res.status==201){
                     alert(res.data.error)
+                    console.log(res.data)
                 }else if(res.status==200){
                     setFormat(res.data.format)
                     setData(res.data.input)

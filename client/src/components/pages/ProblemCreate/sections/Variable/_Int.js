@@ -8,10 +8,10 @@ function _Int(props) {
         setData({...Data,name:e.target.value})
     }
     const handleMin=(e)=>{
-        setData({...Data,min:e})
+        setData({...Data,min:e.target.value})
     }
     const handleMax=(e)=>{
-        setData({...Data,max:e})
+        setData({...Data,max:e.target.value})
     }
     const handleFix=(e)=>{
         console.log(Data)
@@ -34,10 +34,10 @@ function _Int(props) {
                     <Input value={Data.name} onChange={handleName} style={{textAlign:'center'}}/>
                 </Descriptions.Item>
                 <Descriptions.Item label="최소값" style={{width:'20%',textAlign:'center'}}>
-                    <InputNumber value={Data.min} onChange={handleMin} style={{textAlign:'center'}}/>
+                    <Input value={Data.min} onChange={handleMin} style={{textAlign:'center'}}/>
                 </Descriptions.Item>
                 <Descriptions.Item label="최대값" style={{width:'20%',textAlign:'center'}}>
-                    <InputNumber value={Data.max} onChange={handleMax} style={{textAlign:'center'}}/>
+                    <Input value={Data.max} onChange={handleMax} style={{textAlign:'center'}}/>
                 </Descriptions.Item>
                 <Descriptions.Item label="고정" style={{width:'20%',textAlign:'center'}}>
                     <Checkbox checked={Data.fix} onChange={handleFix}/>
