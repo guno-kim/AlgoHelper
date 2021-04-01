@@ -3,7 +3,7 @@ cd src
 
 cnt=0
 echo "-----start-----"
-while (( "${cnt}" < 11 )); do
+while (( "${cnt}" < 12 )); do
     start=$(date +%s%3N)
     python ./testCode.py  #1
     end=$(date +%s%3N)

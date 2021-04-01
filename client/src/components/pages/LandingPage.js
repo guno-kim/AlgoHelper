@@ -9,12 +9,7 @@ function LandingPage(props) {
     return (
         <Layout>
             <div>
-                <button onClick={()=>{
-                    axios.get('/',(req,res)=>{
-                        console.log(res.data)
-                    })
-                }}>server</button>
-                <input/>
+                <h1>Demo</h1>
             </div>
         </Layout>
         

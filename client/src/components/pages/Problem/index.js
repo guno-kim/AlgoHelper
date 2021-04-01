@@ -95,6 +95,7 @@ function Problem(props) {
         <Layout>
             <Wrapper>
                 <h2 style={{margin:'50px 0', fontSize:'30px'}}>[{Setting.id}] {Setting.title}</h2>
+                <div style={{marginBottom:'30px'}}>{Setting.description}</div>
                 
                 <Collapse defaultActiveKey={[]} style={{width:'900px'}}>
                     <Panel header="데이터 설정" key="1" style={{fontSize:'18px'}}>
@@ -167,8 +168,6 @@ function Problem(props) {
                         <DownOutlined />
                     </Button>
                 </div>
-                <button onClick={()=>{console.log(Like)}}>like</button>
-                <button onClick={()=>{console.log(Setting)}}>settinf</button>
             </Wrapper>
         </Layout>
     )

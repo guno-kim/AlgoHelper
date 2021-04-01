@@ -3,14 +3,10 @@ const router=express.Router();
 const fs = require('fs-extra');
 const rs = require('randomstring');
 const path = require('path');
-const {exec, spawn}=require('child_process')
 const {test}=require('../func/test')
 const {Problem}=require('../models/Problem')
-const {getDocker}=require('../func/compile')
-const {getExample,getInputs}=require('../func/inputGenerate');
-const { resolve } = require('path');
+const {getInputs}=require('../func/inputGenerate');
 const {auth}=require('../middleware/auth');
-const { anySeries } = require('async');
 
 router.get('/',async (req,res)=>{
     const problem=await Problem.findOne({_id:req.query._id})
@@ -20,7 +16,7 @@ router.get('/',async (req,res)=>{
 router.get('/getList',async (req,res)=>{
     console.log(req.query.search)
 
-    const problemList=await Problem.find({id:{$regex:req.query.search,$options:'i'}},{'id':1,'title':1,'date':1,'like':1,'dislike':1})
+    const problemList=await Problem.find({$or:[ {id:{$regex:req.query.search,$options:'i'}},{title:{$regex:req.query.search,$options:'i'}} ]},{'id':1,'title':1,'date':1,'like':1,'dislike':1})
     res.send(problemList)
 })
 router.get('/my',auth,async (req,res)=>{
@@ -50,13 +46,12 @@ router.post('/create',auth,(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
-    const problemNum=10;
+    const problemNum=15;
     let outputs=[];
     const hash1 = rs.generate(10);
     const hash2 = rs.generate(10);
     try {
         const inputs=await getInputs(problem,problemNum)
-
         let answerResult= await test(problem.testCodes.code,hash1,inputs,problemNum)
         let myResult= await test(problem.myCode.code,hash2,inputs,problemNum)
         for(let i=0;i<Math.min(answerResult.length,myResult.length);i++){
@@ -74,6 +69,12 @@ router.get('/test',async (req,res)=>{
                 correct:myResult[i].data==answerResult[i].data? 'correct':'fail',
             }
             outputs.push(temp)
+        }
+        console.log(outputs.length)
+        console.log(myResult.length)
+        console.log(answerResult.length)
+        if(outputs.length==problemNum){ //맨 처음 데이터 제거 ( 컨테이너 생성? 떄문에 오래걸림 )
+            outputs.shift()
         }
         res.status(200).send({
             success:true,

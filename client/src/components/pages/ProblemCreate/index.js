@@ -127,11 +127,9 @@ function GenerateData(props) {
                     <CodeBox value={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
                 </div>
                 
+                <Button type="primary"  size='large' onClick={showModal} style={{marginBottom:'50px'}}>저장</Button>
 
-
-
-
-                <Button type="primary"  size='large' onClick={showModal}>저장</Button>
+                
                 <Modal title="Basic Modal" visible={isModalVisible} 
                     onCancel={handleCancel}
                     footer={[
@@ -178,7 +176,7 @@ function GenerateData(props) {
                                 {offset:10}
                             }
                         >
-                        <Button key="submit" htmlType="submit" >
+                        <Button key="submit" htmlType="submit"  >
                           저장
                         </Button>
                         </Form.Item>
