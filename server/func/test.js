@@ -2,12 +2,11 @@ const path = require('path');
 const {getDocker}= require('./compile')
 const {spawn}=require('child_process')
 
-function test(code,hash,inputs,problemNum){ // 채점 함수
+function test(code,language,hash,inputs,problemNum){ // 채점 함수
     let outputs=[],output={},cnt=0,phase=0
-    const tempPath = path.resolve("DEBUG_TEMP_PATH", hash);
 
     return new Promise(async (resolve)=>{
-        const docker=getDocker(code,tempPath,hash)
+        const docker=getDocker(code,language,hash)
         function killDocker(){
             spawn('docker',['kill',hash])//리눅스에서 자식 프로세스는 따로 종료해야한다.
             docker.kill('SIGINT')

@@ -18,7 +18,7 @@ const problemSchema=mongoose.Schema({
     inputBlocks:{
         type:Array
     },
-    testCodes:{
+    testCode:{
         type:Object
     },
     like:[mongoose.Schema.Types.ObjectId],

@@ -23,7 +23,7 @@ function GenerateData(props) {
         title:'',
         description:'',
         variables:[{type:'int',name:'a',min:0,max:5,fix:true}],
-        testCodes:{language:'python',code:'def:'},
+        testCode:{language:'python',code:'def:'},
         inputBlocks:[{inputs:new Array(10).fill("").map(()=>new Array(10).fill("")),width:1,height:1,horizonRep:1,verticalRep:1}],
     })
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -35,7 +35,7 @@ function GenerateData(props) {
     //State Handle Function
     const handleVariables=(variables)=>{setSetting({...Setting,variables:variables})}
     const handleInput=(inputBlocks)=>{ setSetting({...Setting,inputBlocks:inputBlocks})}
-    const handleTestCodes=(code)=>{setSetting({...Setting,testCodes:code})}
+    const handleTestCode=(code)=>{setSetting({...Setting,testCode:code})}
     const handleId=(e)=>{setSetting({...Setting,id:e.target.value})}
     const handleTitle=(e)=>{setSetting({...Setting,title:e.target.value})}
     const handleDesc=(e)=>{setSetting({...Setting,description:e.target.value})}
@@ -124,7 +124,7 @@ function GenerateData(props) {
                         <h1 className='title'>정답 코드 입력</h1>
                         <h3 className='description'>채점에 사용될 정답 코드를 입력하세요</h3>
                     </div>
-                    <CodeBox value={Setting.testCodes} sendState={handleTestCodes} style={{height:'400px'}}/>
+                    <CodeBox value={Setting.testCode} sendState={handleTestCode} style={{height:'400px'}}/>
                 </div>
                 
                 <Button type="primary"  size='large' onClick={showModal} style={{marginBottom:'50px'}}>저장</Button>

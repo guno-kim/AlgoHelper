@@ -18,6 +18,8 @@ function CodeBox(props) {
                 <div style={{marginRight:'10px'}}>언어 : </div>
                 <select value = {Code.language} onChange={handelLanguage}>
                     <option value="python">Python</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
                 </select>
             </div>
             

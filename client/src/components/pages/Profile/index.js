@@ -68,22 +68,9 @@ function MyPage() {
             delete:ele._id,
             title:[`[ ${ele.id} ] ${ele.title}`,ele._id],
             date:ele.date,
-            like:ele.like-ele.dislike
+            like:ele.like.length-ele.dislike.length
         })
     })
-    const tempData=()=>{
-        let temp=[]
-        for(let i=0;i<95;i++){
-            temp.push({
-                key:i,
-                delete:'asd',
-                title:[`sfsdfd${i}`,'asd'],
-                date:'2020-12-12',
-                like:100-i
-            })
-        }
-        return temp
-    }
 
     return (
         <Layout>

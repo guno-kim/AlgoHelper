@@ -52,8 +52,8 @@ router.get('/test',async (req,res)=>{
     const hash2 = rs.generate(10);
     try {
         const inputs=await getInputs(problem,problemNum)
-        let answerResult= await test(problem.testCodes.code,hash1,inputs,problemNum)
-        let myResult= await test(problem.myCode.code,hash2,inputs,problemNum)
+        let answerResult= await test(problem.testCode.code,problem.testCode.language,hash1,inputs,problemNum)
+        let myResult= await test(problem.myCode.code,problem.myCode.language,hash2,inputs,problemNum)
         for(let i=0;i<Math.min(answerResult.length,myResult.length);i++){
             let temp={
                 input:inputs[i],

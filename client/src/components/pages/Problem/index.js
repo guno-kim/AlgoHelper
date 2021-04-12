@@ -129,7 +129,7 @@ function Problem(props) {
                     </div>
                     </Panel>
                     <Panel header="정답 코드" key="3" style={{fontSize:'18px'}} forceRender={true}>
-                        <CodeBox value={Setting.testCodes}/>
+                        <CodeBox value={Setting.testCode}/>
                     </Panel>
                 </Collapse>
                 <div className="content-container" style={{marginTop:'40px'}}>
