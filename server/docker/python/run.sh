@@ -8,8 +8,7 @@ while (( "${cnt}" < 12 )); do
     python ./testCode.py  #1
     end=$(date +%s%3N)
 
-    echo "${cnt}-----time-----$(( $end - $start ))"  #2
+    echo "-----time-----$(( $end - $start ))-----end-----"  #2
 
     (( cnt = "${cnt}" + 1 ))
 done
-echo "-----end-----"

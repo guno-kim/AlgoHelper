@@ -90,8 +90,8 @@ function GenerateData(props) {
                 
                 <div className='content-container'>
                     <div className='header'>
-                        <h1 className='title'>데이터 만들기</h1>
-                        <h3 className='description'>변수와 숫자를 이용해 데이터를 만드세요</h3>
+                        <h1 className='title'>입력 데이터 만들기</h1>
+                        <h3 className='description'>변수와 숫자를 이용해 입력 데이터를 만드세요</h3>
                     </div>
                     <InputContainer sendState={handleInput} default={Setting.inputBlocks}/>
                 </div>
@@ -122,7 +122,7 @@ function GenerateData(props) {
                 <div className="content-container">
                     <div className='header'>
                         <h1 className='title'>정답 코드 입력</h1>
-                        <h3 className='description'>채점에 사용될 정답 코드를 입력하세요</h3>
+                        <h3 className='description'>비교에 사용될 정답 코드를 입력하세요</h3>
                     </div>
                     <CodeBox value={Setting.testCode} sendState={handleTestCode} style={{height:'400px'}}/>
                 </div>

@@ -31,7 +31,7 @@ function _Int(props) {
                     Int
                 </Descriptions.Item>
                 <Descriptions.Item label="변수이름" style={{width:'20%',textAlign:'center'}}>
-                    <Input value={Data.name} onChange={handleName} style={{textAlign:'center'}}/>
+                    <Input value={Data.name} onChange={handleName} style={{textAlign:'center'}} maxLength={1}/>
                 </Descriptions.Item>
                 <Descriptions.Item label="최소값" style={{width:'20%',textAlign:'center'}}>
                     <Input value={Data.min} onChange={handleMin} style={{textAlign:'center'}}/>

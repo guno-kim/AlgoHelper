@@ -23,11 +23,10 @@ class VariableTable{
     }
 
     compute(line){// min, max 등 값이 변수계산 문자열일때 계산
-        let temp=[...this.table].sort((v1,v2)=>v2.name.length-v1.name.length)// 긴변수부터 치환 ex) AD+A 에서  AD를 A로 치환 방지
         if (!isNaN(parseInt(line)))
-            return parseInt(line)
+            return eval(line)
         console.log('line to compute',line)
-        for(let v of temp){
+        for(let v of this.table){
             let re=new RegExp(v.name,'g')
             if(!line.includes(v.name))
                 continue
@@ -45,8 +44,11 @@ class VariableTable{
     }
     getValue(name){
         if(!isNaN(parseFloat(name)))
-            return parseFloat(name)
+            return eval(name)
         let v=this.getVariable(name)
+
+        if(!v) throw new Error(`변수 선언 오류`)
+        
         if(v.fix&&v.value!=undefined)
             return v.value
         let min=this.compute(v.min)

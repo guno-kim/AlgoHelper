@@ -46,7 +46,7 @@ router.post('/create',auth,(req,res)=>{
 router.get('/test',async (req,res)=>{
     const params=new URLSearchParams(req.query)
     const problem=JSON.parse(params.get('problem'))
-    const problemNum=15;
+    const problemNum=11;
     let outputs=[];
     const hash1 = rs.generate(10);
     const hash2 = rs.generate(10);
@@ -54,6 +54,8 @@ router.get('/test',async (req,res)=>{
         const inputs=await getInputs(problem,problemNum)
         let answerResult= await test(problem.testCode.code,problem.testCode.language,hash1,inputs,problemNum)
         let myResult= await test(problem.myCode.code,problem.myCode.language,hash2,inputs,problemNum)
+
+
         for(let i=0;i<Math.min(answerResult.length,myResult.length);i++){
             let temp={
                 input:inputs[i],
@@ -70,9 +72,6 @@ router.get('/test',async (req,res)=>{
             }
             outputs.push(temp)
         }
-        console.log(outputs.length)
-        console.log(myResult.length)
-        console.log(answerResult.length)
         if(outputs.length==problemNum){ //맨 처음 데이터 제거 ( 컨테이너 생성? 떄문에 오래걸림 )
             outputs.shift()
         }
