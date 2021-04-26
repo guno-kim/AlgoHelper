@@ -35,7 +35,7 @@ app.get('/temp',(req,res)=>{
     })
     res.end()
 })
-app.use('/data',require('./routes/data'))
+app.use('/input',require('./routes/input'))
 app.use('/problem',require('./routes/problem'))
 app.use('/user',require('./routes/user'))
 app.listen(port,()=>{

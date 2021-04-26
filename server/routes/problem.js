@@ -13,15 +13,13 @@ router.get('/',async (req,res)=>{
     res.send(problem)
 })
 
-router.get('/getList',async (req,res)=>{
-    console.log(req.query.search)
+router.get('/list',async (req,res)=>{
 
     const problemList=await Problem.find({$or:[ {id:{$regex:req.query.search,$options:'i'}},{title:{$regex:req.query.search,$options:'i'}} ]},{'id':1,'title':1,'date':1,'like':1,'dislike':1})
     res.send(problemList)
 })
 router.get('/my',auth,async (req,res)=>{
     const problemList=await Problem.find({writer:req.user._id})
-    console.log(problemList)
     res.send(problemList)
 })
 router.post('/delete',auth,(req,res)=>{
@@ -33,7 +31,6 @@ router.post('/delete',auth,(req,res)=>{
 router.post('/create',auth,(req,res)=>{
 
     const problem=new Problem({...req.body,writer:req.user._id})
-    console.log(problem)
     problem.save()
         .then(()=>{
             res.status(200).send({success:true})

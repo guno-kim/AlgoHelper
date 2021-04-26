@@ -1,9 +1,8 @@
 import React,{useState,useRef,useEffect} from 'react'
-import CodeBox from '../../commons/CodeBox/CodeBox'
 import {useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import {Button,Table,Modal, Result} from 'antd'
-import axios from '../../../axios'
+import problemAPI from '../../../apis/problem'
 
 function Test() {
     const location=useLocation()
@@ -17,12 +16,11 @@ function Test() {
     const getOutputs=()=>{
         setLoading(true)
 
-        axios.get('/problem/test',{
+        problemAPI.test({
             params:{
                 problem:setting
             }
         }).then((res)=>{
-            console.log(res.data)
             setLoading(false)
             setOutputs(res.data.outputs)
         })

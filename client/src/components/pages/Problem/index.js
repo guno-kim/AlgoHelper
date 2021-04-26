@@ -1,7 +1,8 @@
 import React,{useEffect,useState,useRef} from 'react'
 import styled from 'styled-components'
-import axios from '../../../axios'
 import { useSelector } from 'react-redux'
+import problemAPI from '../../../apis/problem'
+import inputAPI from '../../../apis/input'
 
 import { UpOutlined,DownOutlined } from '@ant-design/icons';
 import Layout from '../../Layout/Layout2'
@@ -12,6 +13,8 @@ import InputBlockContainer from './sections/InputBlockContainer/InputBlocks'
 import InputFormat from './sections/InputFormat/InputFormat'
 import CodeBox from  './sections/CodeBox/CodeBox'
 import CodeBox2 from  '../../commons/CodeBox/CodeBox'
+
+
 const { Panel } = Collapse;
 function Problem(props) {
     const problem_Id=props.match.params.problem_Id
@@ -27,7 +30,7 @@ function Problem(props) {
         setMyCode(code)
     }
     useEffect(async () => {
-        const request=await axios.get('/problem',{
+        const request=await problemAPI.get({
             params:{
                 _id:problem_Id
             }
@@ -50,10 +53,14 @@ function Problem(props) {
 
    const getExample=()=>{
     let body={
-        variables:Setting.variables,
-        inputBlocks:Setting.inputBlocks
+        params:{
+            setting:{
+                variables:Setting.variables,
+                inputBlocks:Setting.inputBlocks
+            }
+        }
     }
-    axios.post('/data/generate',body)
+    inputAPI.getExample(body)
         .then((res)=>{
             if(res.status==201){
                 alert(res.data.error)
@@ -69,9 +76,9 @@ function Problem(props) {
         e.target.focus();//선택 해제
     };
     function handleLike(){
-        axios.post(`/problem/${problem_Id}/like`)
+        problemAPI.like(problem_Id)
             .then(async()=>{
-                const request=await axios.get('/problem',{
+                const request=await problemAPI.get({
                     params:{
                         _id:problem_Id
                     }
@@ -80,14 +87,13 @@ function Problem(props) {
             })
     }
     function handleDislike(){
-        axios.post(`/problem/${problem_Id}/dislike`)
+        problemAPI.dislike(problem_Id)
             .then(async()=>{
-                const request=await axios.get('/problem',{
+                const request=await problemAPI.get({
                     params:{
                         _id:problem_Id
                     }
                 })
-                console.log(request.data)
                 setSetting(request.data)
             })
     }

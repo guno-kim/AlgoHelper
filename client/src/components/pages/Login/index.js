@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import {GoogleOutlined} from '@ant-design/icons'
-import axios from '../../../axios'
 
 function Login(props) {
     return (

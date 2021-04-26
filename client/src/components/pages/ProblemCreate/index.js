@@ -1,9 +1,10 @@
 import React,{useState,useEffect,useRef} from 'react'
 import {Button,Input,Form,Modal} from 'antd'
-import axios from '../../../axios'
 import styled from 'styled-components'
 import Layout from '../../Layout/Layout'
 import { withRouter } from 'react-router-dom';
+import problemAPI from '../../../apis/problem'
+import inputAPI from '../../../apis/input'
 
 
 import _Int from './sections/Variable/_Int'
@@ -28,9 +29,7 @@ function GenerateData(props) {
     })
     const [isModalVisible, setIsModalVisible] = useState(false);
     
-
     const textAreaRef = useRef(null);
-    
 
     //State Handle Function
     const handleVariables=(variables)=>{setSetting({...Setting,variables:variables})}
@@ -40,7 +39,7 @@ function GenerateData(props) {
     const handleTitle=(e)=>{setSetting({...Setting,title:e.target.value})}
     const handleDesc=(e)=>{setSetting({...Setting,description:e.target.value})}
     const handleSave=()=>{
-        axios.post('/problem/create',Setting)
+        problemAPI.create(Setting)
             .then((res)=>{
                     alert("저장 성공")
                     console.log(props)
@@ -56,10 +55,14 @@ function GenerateData(props) {
     const handleCancel = () => {setIsModalVisible(false);};
     const getExample=()=>{
         let body={
-            variables:Setting.variables,
-            inputBlocks:Setting.inputBlocks
+            params:{
+                setting:{
+                    variables:Setting.variables,
+                    inputBlocks:Setting.inputBlocks
+                }
+            }
         }
-        axios.post('/data/generate',body)
+        inputAPI.getExample(body)
             .then((res)=>{
                 if(res.status==201){
                     alert(res.data.error)

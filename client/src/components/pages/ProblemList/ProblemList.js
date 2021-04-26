@@ -1,32 +1,23 @@
 import React,{useState,useEffect} from 'react'
-import { List,Table,Button,Input,Form } from 'antd';
-import styled from 'styled-components'
-import axios from '../../../axios'
+import { Table,Button,Input,Form } from 'antd';
 import Layout from '../../Layout/Layout2'
-
+import problemAPI from '../../../apis/problem'
 function ProblemList(props) {
 
     const [Problems, setProblems] = useState([])
     const [Search, setSearch] = useState("")
-    useEffect(() => {
-        axios.get('/problem/getList',{
-            params:{
-                search:""
-            }
-        }).then(res=>setProblems(res.data))
-        
+
+    useEffect( () => {
+        problemAPI.getList({ params:{ search:"" } }).then(res=>setProblems(res.data))
     }, [])
 
     const handleSearch=(e)=>{
         setSearch(e.target.value)
     }
     const getProblemList= async ()=>{
-        const request=await axios.get('/problem/getList',{
-            params:{
-                search:Search
-            }
-        })
-        setProblems(request.data)
+        
+        problemAPI.getList({ params:{ search:Search } }).then(res=>setProblems(res.data))
+
     }
     const columns = [
         { title: '제목', dataIndex: 'title', key: 'title',

@@ -1,12 +1,12 @@
 import React,{useState,useEffect,useRef} from 'react'
 import { useSelector } from 'react-redux'
-import axios from '../../../axios'
 import { useDispatch } from 'react-redux';
 import {update} from '../../../actions/user_action'
 import { withRouter } from 'react-router-dom';
-import {List,Divider,Table } from 'antd'
-import styled from 'styled-components'
+import {Divider,Table } from 'antd'
 import Layout from '../../Layout/Layout'
+import problemAPI from '../../../apis/problem'
+
 function MyPage() {
     const data=useSelector(state => state.user.data)
     const [Name, setName] = useState("")
@@ -22,15 +22,13 @@ function MyPage() {
         }
     }, [data])
     useEffect(() => {
-        axios.get('/problem/my')
-            .then((res)=>{setProblems(res.data)})
+        problemAPI.getMyList().then((res)=>{setProblems(res.data)})
     }, [])
 
     const handleDelete=(_id)=>{
-        axios.post('/problem/delete',{_id:_id})
+        problemAPI.delete({_id:_id})
             .then(()=>{
-                axios.get('/problem/my')
-                    .then((res)=>{setProblems(res.data)})
+                problemAPI.getMyList().then((res)=>{setProblems(res.data)})
             })
             .catch(()=>{
                 alert('잠시후 시도해주세요')
@@ -74,8 +72,6 @@ function MyPage() {
 
     return (
         <Layout>
-
-            
             <div style={{
                 width:'800px',
                 height:'700px',

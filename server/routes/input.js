@@ -2,9 +2,10 @@ const express=require('express')
 const router=express.Router();
 
 const {getExample}=require('../func/inputGenerate')
-router.post('/generate',(req,res)=>{
-    console.log('request',req.body);
-    getExample(req.body)
+router.get('/',(req,res)=>{
+    const params=new URLSearchParams(req.query)
+    const setting=JSON.parse(params.get('setting'))
+    getExample(setting)
         .then((result)=>{
             res.status(200).send(result);console.log(result)
         })

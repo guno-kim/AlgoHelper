@@ -72,57 +72,6 @@ function test(code,language,hash,inputs,problemNum){ // 채점 함수
             else{
                 tempData+=data
             }
-
-
-
-            /*
-            if (data.includes("-----end-----")){
-                console.log('ended')
-                data=data.replace("-----end-----\n","")
-                resolve(outputs)
-                return
-            }
-            
-            switch (phase) {
-                case 0:
-                    docker.stdin.write(Buffer.from(inputs[0]));
-                    phase++;
-                    break;
-                case 1:
-                    output.data=data;
-                    phase++;
-                    break;
-                case 2:
-                    if(!data.includes('-----time-----')){ //출력이 버퍼에 넘칠때
-                        output.error="출력 오류"
-                        outputs.push(output)
-                        killDocker()
-                        resolve(outputs)
-                        return
-                    }
-                    let token=data.split('-----time-----')
-                    if(token[0]!=cnt){ //입력이 더 많이 됐을때
-                        output.error="입력 오류"
-                        output.data=""
-                        outputs.push(output)
-                        killDocker()
-                        resolve(outputs)
-                        return
-                    }
-                    output.time=token[1]
-                    outputs.push(output)
-                    output={}
-                    cnt++
-                    if(cnt==problemNum){
-                        killDocker()
-                        resolve(outputs)
-                        return
-                    }
-                    phase=1
-                    docker.stdin.write(Buffer.from(inputs[cnt]));
-                default:
-                    break;
-            }*/
         })
 
         docker.on('close',()=>{

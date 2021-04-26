@@ -47,14 +47,13 @@ router.get('/logout',(req,res)=>{
     res.json({success:true})
 });
 
-router.post('/profile/update',async (req,res)=>{
+router.post('/profile',async (req,res)=>{
     try {
         const token=req.cookies.logintoken;
         const body=req.body
         let decoded=await jwt.verify(token,process.env.JWT_SECRET_KEY)
         let newUser=await User.findOneAndUpdate({_id:decoded},{$set:body},{new:true})
         res.json({auth:true,data:newUser})
-        console.log(newUser)
     } catch (error) {
         console.log(error)
         res.status(400).json({error:error})

@@ -1,13 +1,4 @@
 const {Variable,VariableTable}=require('./vairables')
-function getRandomVariable(variable){
-    switch (variable.type) {
-        case 'int':
-            return Math.floor(Math.random() * (variable.max - variable.min + 1)) + variable.min; 
-    
-        default:
-            break;
-    }
-}
 
 function getVariableTable(variableList){
     return new Promise((resolve,reject)=>{
@@ -101,6 +92,8 @@ function getExample(setting){
     })
 }
 function getInputs(setting,cnt){
+    console.log(setting)
+
     return new Promise(async(resolve,reject)=>{  
         try{
             let inputs=[]
