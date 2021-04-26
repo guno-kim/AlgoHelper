@@ -77,6 +77,8 @@ function Test() {
                         bordered={true}
                         loading={Loading}
                     />
+                    <h3 style={{color:'red'}}>시간은 아직 불안정해서 참고용으로만 봐주세요</h3>
+
                 </div>
                 <Modal title={ModalIndex+'번 데이터'} visible={ModalVisible}  onCancel={()=>setModalVisible(false)} width={800}>
                     <div style={{display:'flex',flexDirection:'column',width:'300px'}}>

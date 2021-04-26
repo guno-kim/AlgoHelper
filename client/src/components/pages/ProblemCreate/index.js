@@ -23,7 +23,7 @@ function GenerateData(props) {
         title:'',
         description:'',
         variables:[{type:'int',name:'a',min:0,max:5,fix:true}],
-        testCode:{language:'python',code:'def:'},
+        testCode:{language:'python',code:''},
         inputBlocks:[{inputs:new Array(10).fill("").map(()=>new Array(10).fill("")),width:1,height:1,horizonRep:1,verticalRep:1}],
     })
     const [isModalVisible, setIsModalVisible] = useState(false);

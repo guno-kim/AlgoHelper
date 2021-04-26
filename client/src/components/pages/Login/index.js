@@ -7,6 +7,7 @@ function Login(props) {
     return (
         <Wrapper>
             <div id="main-container">
+                <h1>로그인</h1>
                 <div className="button-box">
                     <div
                         className='login-button google'
